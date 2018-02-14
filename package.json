@@ -1,5 +1,5 @@
 {
-	"name": "bs-react-native",
+	"name": "bs-react-native-web",
 	"version": "0.5.0",
 	"scripts": {
 		"build": "bsb -make-world",

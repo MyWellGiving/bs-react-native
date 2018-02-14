@@ -1,5 +1,5 @@
 {
-  "name": "bs-react-native",
+  "name": "bs-react-native-web",
   "bsc-flags": ["-bs-super-errors"],
   "reason": {"react-jsx": 2},
   "refmt": 3,
