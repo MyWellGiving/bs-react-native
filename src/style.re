@@ -6,7 +6,7 @@ type pt_pct =
   | Pt(float)
   | Pct(float);
 
-let encode_pt_pct = (value) =>
+let encode_pt_pct = value =>
   switch value {
   | Pt(px) => Encode.float(px)
   | Pct(pct) => Encode.pct(pct)
@@ -17,7 +17,7 @@ type pt_pct_auto =
   | Pct(float)
   | Auto;
 
-let encode_pt_pct_auto = (value) =>
+let encode_pt_pct_auto = value =>
   switch value {
   | Pt(pt) => Encode.float(pt)
   | Pct(pct) => Encode.pct(pct)
@@ -43,7 +43,7 @@ type float_interpolated_animated =
   | Animated(AnimatedRe.Value.t)
   | Interpolated(AnimatedRe.Interpolation.t);
 
-let encode_float_interpolated_animated = (value) =>
+let encode_float_interpolated_animated = value =>
   switch value {
   | Float(value) => Encode.float(value)
   | Animated(value) => Encode.animatedValue(value)
@@ -60,11 +60,14 @@ external array_to_style : array(t) => t = "%identity";
 
 let combine = (a, b) => {
   let entries =
-    Array.append(UtilsRN.dictEntries(style_to_dict(a)), UtilsRN.dictEntries(style_to_dict(b)));
-  UtilsRN.dictFromArray(entries) |> to_style
+    Array.append(
+      UtilsRN.dictEntries(style_to_dict(a)),
+      UtilsRN.dictEntries(style_to_dict(b))
+    );
+  UtilsRN.dictFromArray(entries) |> to_style;
 };
 
-let concat = (styles) => array_to_style(Array.of_list(styles));
+let concat = styles => array_to_style(Array.of_list(styles));
 
 let floatStyle = (key, value) => (key, Encode.float(value));
 
@@ -74,7 +77,7 @@ let objectStyle = (key, value) => (key, Encode.object_(value));
 
 let arrayStyle = (key, value) => (key, Encode.array(value));
 
-let style = (sarr) => sarr |> UtilsRN.dictFromList |> to_style;
+let style = sarr => sarr |> UtilsRN.dictFromList |> to_style;
 
 
 /***
@@ -88,7 +91,7 @@ type alignContent =
   | SpaceAround
   | SpaceBetween;
 
-let alignContent = (v) =>
+let alignContent = v =>
   stringStyle(
     "alignContent",
     switch v {
@@ -108,7 +111,7 @@ type alignItems =
   | Stretch
   | Baseline;
 
-let alignItems = (v) =>
+let alignItems = v =>
   stringStyle(
     "alignItems",
     switch v {
@@ -127,7 +130,7 @@ type alignSelf =
   | Stretch
   | Baseline;
 
-let alignSelf = (v) =>
+let alignSelf = v =>
   stringStyle(
     "alignSelf",
     switch v {
@@ -155,7 +158,7 @@ type display =
   | Flex
   | None;
 
-let display = (v) =>
+let display = v =>
   stringStyle(
     "display",
     switch v {
@@ -166,7 +169,7 @@ let display = (v) =>
 
 let flex = floatStyle("flex");
 
-let flexBasis = (value) => ("flexBasis", encode_pt_pct(value));
+let flexBasis = value => ("flexBasis", encode_pt_pct(value));
 
 type flexDirection =
   | Row
@@ -174,7 +177,7 @@ type flexDirection =
   | Column
   | ColumnReverse;
 
-let flexDirection = (v) =>
+let flexDirection = v =>
   stringStyle(
     "flexDirection",
     switch v {
@@ -193,7 +196,7 @@ type flexWrap =
   | Wrap
   | Nowrap;
 
-let flexWrap = (v) =>
+let flexWrap = v =>
   stringStyle(
     "flexWrap",
     switch v {
@@ -210,7 +213,7 @@ type justifyContent =
   | SpaceAround
   | SpaceBetween;
 
-let justifyContent = (v) =>
+let justifyContent = v =>
   stringStyle(
     "justifyContent",
     switch v {
@@ -223,34 +226,37 @@ let justifyContent = (v) =>
     }
   );
 
-let margin = (value) => ("margin", encode_pt_pct_auto(value));
+let margin = value => ("margin", encode_pt_pct_auto(value));
 
-let marginBottom = (value) => ("marginBottom", encode_pt_pct_auto(value));
+let marginBottom = value => ("marginBottom", encode_pt_pct_auto(value));
 
-let marginHorizontal = (value) => ("marginHorizontal", encode_pt_pct_auto(value));
+let marginHorizontal = value => (
+  "marginHorizontal",
+  encode_pt_pct_auto(value)
+);
 
-let marginLeft = (value) => ("marginLeft", encode_pt_pct_auto(value));
+let marginLeft = value => ("marginLeft", encode_pt_pct_auto(value));
 
-let marginRight = (value) => ("marginRight", encode_pt_pct_auto(value));
+let marginRight = value => ("marginRight", encode_pt_pct_auto(value));
 
-let marginTop = (value) => ("marginTop", encode_pt_pct_auto(value));
+let marginTop = value => ("marginTop", encode_pt_pct_auto(value));
 
-let marginVertical = (value) => ("marginVertical", encode_pt_pct_auto(value));
+let marginVertical = value => ("marginVertical", encode_pt_pct_auto(value));
 
-let maxHeight = (value) => ("maxHeight", encode_pt_pct(value));
+let maxHeight = value => ("maxHeight", encode_pt_pct(value));
 
-let maxWidth = (value) => ("maxWidth", encode_pt_pct(value));
+let maxWidth = value => ("maxWidth", encode_pt_pct(value));
 
-let minHeight = (value) => ("minHeight", encode_pt_pct(value));
+let minHeight = value => ("minHeight", encode_pt_pct(value));
 
-let minWidth = (value) => ("minWidth", encode_pt_pct(value));
+let minWidth = value => ("minWidth", encode_pt_pct(value));
 
 type overflow =
   | Visible
   | Hidden
   | Scroll;
 
-let overflow = (v) =>
+let overflow = v =>
   stringStyle(
     "overflow",
     switch v {
@@ -260,25 +266,25 @@ let overflow = (v) =>
     }
   );
 
-let padding = (value) => ("padding", encode_pt_pct(value));
+let padding = value => ("padding", encode_pt_pct(value));
 
-let paddingBottom = (value) => ("paddingBottom", encode_pt_pct(value));
+let paddingBottom = value => ("paddingBottom", encode_pt_pct(value));
 
-let paddingHorizontal = (value) => ("paddingHorizontal", encode_pt_pct(value));
+let paddingHorizontal = value => ("paddingHorizontal", encode_pt_pct(value));
 
-let paddingLeft = (value) => ("paddingLeft", encode_pt_pct(value));
+let paddingLeft = value => ("paddingLeft", encode_pt_pct(value));
 
-let paddingRight = (value) => ("paddingRight", encode_pt_pct(value));
+let paddingRight = value => ("paddingRight", encode_pt_pct(value));
 
-let paddingTop = (value) => ("paddingTop", encode_pt_pct(value));
+let paddingTop = value => ("paddingTop", encode_pt_pct(value));
 
-let paddingVertical = (value) => ("paddingVertical", encode_pt_pct(value));
+let paddingVertical = value => ("paddingVertical", encode_pt_pct(value));
 
 type position =
   | Absolute
   | Relative;
 
-let position = (v) =>
+let position = v =>
   stringStyle(
     "position",
     switch v {
@@ -287,26 +293,26 @@ let position = (v) =>
     }
   );
 
-let top = (value) => ("top", encode_pt_pct_animated_interpolated(value));
+let top = value => ("top", encode_pt_pct_animated_interpolated(value));
 
-let left = (value) => ("left", encode_pt_pct_animated_interpolated(value));
+let left = value => ("left", encode_pt_pct_animated_interpolated(value));
 
-let right = (value) => ("right", encode_pt_pct_animated_interpolated(value));
+let right = value => ("right", encode_pt_pct_animated_interpolated(value));
 
-let bottom = (value) => ("bottom", encode_pt_pct_animated_interpolated(value));
+let bottom = value => ("bottom", encode_pt_pct_animated_interpolated(value));
 
-let height = (value) => ("height", encode_pt_pct_animated_interpolated(value));
+let height = value => ("height", encode_pt_pct_animated_interpolated(value));
 
-let width = (value) => ("width", encode_pt_pct_animated_interpolated(value));
+let width = value => ("width", encode_pt_pct_animated_interpolated(value));
 
-let zIndex = (value) => ("zIndex", Encode.int(value));
+let zIndex = value => ("zIndex", Encode.int(value));
 
 type direction =
   | Inherit
   | Ltr
   | Rtl;
 
-let direction = (v) =>
+let direction = v =>
   stringStyle(
     "direction",
     switch v {
@@ -323,7 +329,10 @@ let direction = (v) =>
 let shadowColor = stringStyle("shadowColor");
 
 let shadowOffset = (~height, ~width) =>
-  UtilsRN.dictFromArray([|("height", Encode.float(height)), ("width", Encode.float(width))|])
+  UtilsRN.dictFromArray([|
+    ("height", Encode.float(height)),
+    ("width", Encode.float(width))
+  |])
   |> objectStyle("shadowOffset");
 
 let shadowOpacity = floatStyle("shadowOpacity");
@@ -365,14 +374,15 @@ module Transform = {
         (x, acc) =>
           switch x {
           | (key, Some(value)) =>
-            let val_ = UtilsRN.dictFromArray([|(key, value)|]) |> Encode.object_;
-            [val_, ...acc]
+            let val_ =
+              UtilsRN.dictFromArray([|(key, value)|]) |> Encode.object_;
+            [val_, ...acc];
           | _ => acc
           },
         opt_values,
         []
       );
-    Array.of_list(values) |> arrayStyle("transform")
+    Array.of_list(values) |> arrayStyle("transform");
   };
   let make =
       (
@@ -390,8 +400,8 @@ module Transform = {
         ()
       ) =>
     create_(
-      [@bs] ((value) => UtilsRN.option_map(Encode.float, value)),
-      [@bs] ((value) => UtilsRN.option_map(Encode.string, value)),
+      [@bs] (value => UtilsRN.option_map(Encode.float, value)),
+      [@bs] (value => UtilsRN.option_map(Encode.string, value)),
       perspective,
       rotate,
       rotateX,
@@ -420,8 +430,8 @@ module Transform = {
         ()
       ) =>
     create_(
-      [@bs] ((value) => UtilsRN.option_map(Encode.animatedValue, value)),
-      [@bs] ((value) => UtilsRN.option_map(Encode.animatedValue, value)),
+      [@bs] (value => UtilsRN.option_map(Encode.animatedValue, value)),
+      [@bs] (value => UtilsRN.option_map(Encode.animatedValue, value)),
       perspective,
       rotate,
       rotateX,
@@ -450,8 +460,8 @@ module Transform = {
         ()
       ) =>
     create_(
-      [@bs] ((value) => UtilsRN.option_map(Encode.interpolatedValue, value)),
-      [@bs] ((value) => UtilsRN.option_map(Encode.interpolatedValue, value)),
+      [@bs] (value => UtilsRN.option_map(Encode.interpolatedValue, value)),
+      [@bs] (value => UtilsRN.option_map(Encode.interpolatedValue, value)),
       perspective,
       rotate,
       rotateX,
@@ -474,7 +484,7 @@ type backfaceVisibility =
   | Visible
   | Hidden;
 
-let backfaceVisibility = (v) =>
+let backfaceVisibility = v =>
   stringStyle(
     "backfaceVisibility",
     switch v {
@@ -510,7 +520,7 @@ type borderStyle =
   | Dotted
   | Dashed;
 
-let borderStyle = (v) =>
+let borderStyle = v =>
   stringStyle(
     "borderStyle",
     switch v {
@@ -520,7 +530,7 @@ let borderStyle = (v) =>
     }
   );
 
-let opacity = (value) => ("opacity", encode_float_interpolated_animated(value));
+let opacity = value => ("opacity", encode_float_interpolated_animated(value));
 
 let elevation = floatStyle("elevation");
 
@@ -532,13 +542,16 @@ let color = stringStyle("color");
 
 let fontFamily = stringStyle("fontFamily");
 
-let fontSize = (value) => ("fontSize", encode_float_interpolated_animated(value));
+let fontSize = value => (
+  "fontSize",
+  encode_float_interpolated_animated(value)
+);
 
 type fontStyle =
   | Normal
   | Italic;
 
-let fontStyle = (v) =>
+let fontStyle = v =>
   stringStyle(
     "fontStyle",
     switch v {
@@ -547,7 +560,7 @@ let fontStyle = (v) =>
     }
   );
 
-let fontWeight = (v) =>
+let fontWeight = v =>
   stringStyle(
     "fontWeight",
     switch v {
@@ -574,7 +587,7 @@ type textAlign =
   | Center
   | Justify;
 
-let textAlign = (v) =>
+let textAlign = v =>
   stringStyle(
     "textAlign",
     switch v {
@@ -592,7 +605,7 @@ type textDecorationLine =
   | LineThrough
   | UnderlineLineThrough;
 
-let textDecorationLine = (v) =>
+let textDecorationLine = v =>
   stringStyle(
     "textDecorationLine",
     switch v {
@@ -606,12 +619,15 @@ let textDecorationLine = (v) =>
 let textShadowColor = stringStyle("textShadowColor");
 
 let textShadowOffset = (~height, ~width) =>
-  UtilsRN.dictFromArray([|("height", Encode.float(height)), ("width", Encode.float(width))|])
+  UtilsRN.dictFromArray([|
+    ("height", Encode.float(height)),
+    ("width", Encode.float(width))
+  |])
   |> objectStyle("textShadowOffset");
 
 let textShadowRadius = floatStyle("textShadowRadius");
 
-let includeFontPadding = (value) => (
+let includeFontPadding = value => (
   "includeFontPadding",
   Encode.boolean(Js.Boolean.to_js_boolean(value))
 );
@@ -622,7 +638,7 @@ type textAlignVertical =
   | Bottom
   | Center;
 
-let textAlignVertical = (v) =>
+let textAlignVertical = v =>
   stringStyle(
     "textAlignVertical",
     switch v {
@@ -633,8 +649,11 @@ let textAlignVertical = (v) =>
     }
   );
 
-let fontVariant = (fontVariants) =>
-  fontVariants |> Array.of_list |> Array.map(Encode.string) |> arrayStyle("fontVariant");
+let fontVariant = fontVariants =>
+  fontVariants
+  |> Array.of_list
+  |> Array.map(Encode.string)
+  |> arrayStyle("fontVariant");
 
 let letterSpacing = floatStyle("letterSpacing");
 
@@ -646,7 +665,7 @@ type textDecorationStyle =
   | Dotted
   | Dashed;
 
-let textDecorationStyle = (v) =>
+let textDecorationStyle = v =>
   stringStyle(
     "textDecorationStyle",
     switch v {
@@ -662,7 +681,7 @@ type writingDirection =
   | Ltr
   | Rtl;
 
-let writingDirection = (v) =>
+let writingDirection = v =>
   stringStyle(
     "writingDirection",
     switch v {
@@ -681,7 +700,7 @@ type resizeMode =
 
 
 /*** Image props */
-let resizeMode = (v) =>
+let resizeMode = v =>
   stringStyle(
     "resizeMode",
     switch v {
@@ -696,3 +715,40 @@ let resizeMode = (v) =>
 let tintColor = stringStyle("tintColor");
 
 let overlayColor = stringStyle("overlayColor");
+
+
+/***
+ *  Web Props
+ */
+type listStyleType =
+  | Disc
+  | Circle
+  | Square
+  | Decimal
+  | Georgian
+  | CJKIdeographic
+  | Kannada
+  | None
+  | Inherit
+  | Initial
+  | Unset
+  | Custom(string);
+
+let listStyleType = v =>
+  stringStyle(
+    "listStyleType",
+    switch v {
+    | Disc => "disc"
+    | Circle => "circle"
+    | Square => "square"
+    | Decimal => "decimal"
+    | Georgian => "georgian"
+    | CJKIdeographic => "cjk-ideographic"
+    | Kannada => "kannada"
+    | None => "none"
+    | Inherit => "inherit"
+    | Initial => "initial"
+    | Unset => "unset"
+    | Custom(string) => string
+    }
+  );

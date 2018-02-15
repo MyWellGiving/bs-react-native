@@ -313,7 +313,19 @@ type fontStyle =
 let fontStyle: fontStyle => styleElement;
 
 let fontWeight:
-  [ | `Normal | `Bold | `_100 | `_200 | `_300 | `_400 | `_500 | `_600 | `_700 | `_800 | `_900] =>
+  [
+    | `Normal
+    | `Bold
+    | `_100
+    | `_200
+    | `_300
+    | `_400
+    | `_500
+    | `_600
+    | `_700
+    | `_800
+    | `_900
+  ] =>
   styleElement;
 
 let lineHeight: float => styleElement;
@@ -384,3 +396,23 @@ let resizeMode: resizeMode => styleElement;
 let tintColor: string => styleElement;
 
 let overlayColor: string => styleElement;
+
+
+/***
+ *  Web Props
+ */
+type listStyleType =
+  | Disc
+  | Circle
+  | Square
+  | Decimal
+  | Georgian
+  | CJKIdeographic
+  | Kannada
+  | None
+  | Inherit
+  | Initial
+  | Unset
+  | Custom(string);
+
+let listStyleType: listStyleType => styleElement;
