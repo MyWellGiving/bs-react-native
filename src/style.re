@@ -752,3 +752,84 @@ let listStyleType = v =>
     | Custom(string) => string
     }
   );
+
+type cursor =
+  | Auto
+  | Default
+  | None
+  | ContextMenu
+  | Help
+  | Pointer
+  | Progress
+  | Wait
+  | Cell
+  | Crosshair
+  | Text
+  | VerticalText
+  | Alias
+  | Copy
+  | Move
+  | NoDrop
+  | NotAllowed
+  | EResize
+  | NResize
+  | NEResize
+  | NWResize
+  | SResize
+  | SEResize
+  | SWResize
+  | WResize
+  | EWResize
+  | NSResize
+  | NESWResize
+  | NWSEResize
+  | ColResize
+  | RowResize
+  | AllScroll
+  | ZoomIn
+  | ZoomOut
+  | Grab
+  | Grabbing;
+
+let cursor = v =>
+  stringStyle(
+    "cursor",
+    switch v {
+    | Auto => "auto"
+    | Default => "default"
+    | None => "none"
+    | ContextMenu => "context-menu"
+    | Help => "help"
+    | Pointer => "pointer"
+    | Progress => "progress"
+    | Wait => "wait"
+    | Cell => "cell"
+    | Crosshair => "crosshair"
+    | Text => "text"
+    | VerticalText => "vertical-text"
+    | Alias => "alias"
+    | Copy => "copy"
+    | Move => "move"
+    | NoDrop => "no-drop"
+    | NotAllowed => "not-allowed"
+    | EResize => "e-resize"
+    | NResize => "n-resize"
+    | NEResize => "ne-resize"
+    | NWResize => "nw-resize"
+    | SResize => "s-resize"
+    | SEResize => "se-resize"
+    | SWResize => "sw-resize"
+    | WResize => "w-resize"
+    | EWResize => "ew-resize"
+    | NSResize => "ns-resize"
+    | NESWResize => "nesw-resize"
+    | NWSEResize => "nwse-resize"
+    | ColResize => "col-resize"
+    | RowResize => "row-resize"
+    | AllScroll => "all-scroll"
+    | ZoomIn => "zoom-in"
+    | ZoomOut => "zoom-out"
+    | Grab => "grab"
+    | Grabbing => "grabbing"
+    }
+  );

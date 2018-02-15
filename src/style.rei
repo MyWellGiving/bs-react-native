@@ -416,3 +416,43 @@ type listStyleType =
   | Custom(string);
 
 let listStyleType: listStyleType => styleElement;
+
+type cursor =
+  | Auto
+  | Default
+  | None
+  | ContextMenu
+  | Help
+  | Pointer
+  | Progress
+  | Wait
+  | Cell
+  | Crosshair
+  | Text
+  | VerticalText
+  | Alias
+  | Copy
+  | Move
+  | NoDrop
+  | NotAllowed
+  | EResize
+  | NResize
+  | NEResize
+  | NWResize
+  | SResize
+  | SEResize
+  | SWResize
+  | WResize
+  | EWResize
+  | NSResize
+  | NESWResize
+  | NWSEResize
+  | ColResize
+  | RowResize
+  | AllScroll
+  | ZoomIn
+  | ZoomOut
+  | Grab
+  | Grabbing;
+
+let cursor: cursor => styleElement;
