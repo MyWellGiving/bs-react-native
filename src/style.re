@@ -520,15 +520,32 @@ type borderStyle =
   | Dotted
   | Dashed;
 
-let borderStyle = v =>
-  stringStyle(
-    "borderStyle",
-    switch v {
-    | Solid => "solid"
-    | Dotted => "dotted"
-    | Dashed => "dashed"
-    }
-  );
+let string_of_borderStyle =
+  fun
+  | Solid => "solid"
+  | Dotted => "dotted"
+  | Dashed => "dashed";
+
+let getPlatformBorderStyle = (style, v) => {
+  let propertyName =
+    switch (Platform.os()) {
+    | exception (Platform.UnknownPlatform(p)) =>
+      p === "web" ? style : "borderStyle"
+    | IOS(_)
+    | Android => "borderStyle"
+    };
+  stringStyle(propertyName, v |> string_of_borderStyle);
+};
+
+let borderStyle = v => stringStyle("borderStyle", v |> string_of_borderStyle);
+
+let borderTopStyle = getPlatformBorderStyle("borderTopStyle");
+
+let borderRightStyle = getPlatformBorderStyle("borderRightStyle");
+
+let borderBottomStyle = getPlatformBorderStyle("borderBottomStyle");
+
+let borderLeftStyle = getPlatformBorderStyle("borderLeftStyle");
 
 let opacity = value => ("opacity", encode_float_interpolated_animated(value));
 
