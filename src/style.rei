@@ -456,3 +456,9 @@ type cursor =
   | Grabbing;
 
 let cursor: cursor => styleElement;
+
+type borderCollapse =
+  | Collapse
+  | Separate;
+
+let borderCollapse: borderCollapse => styleElement;

@@ -833,3 +833,16 @@ let cursor = v =>
     | Grabbing => "grabbing"
     }
   );
+
+type borderCollapse =
+  | Collapse
+  | Separate;
+
+let borderCollapse = v =>
+  stringStyle(
+    "borderCollapse",
+    switch v {
+    | Collapse => "collapse"
+    | Separate => "separate"
+    }
+  );
