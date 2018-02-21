@@ -1,10 +1,10 @@
 type error;
 
-let to_opt = (x) => Js.Promise.resolve(Js.Null_undefined.to_opt(x));
+let toOption = (x) => Js.Promise.resolve(Js.Null_undefined.toOption(x));
 
-let map_cb = (cb, err, value) => cb(Js.Null.to_opt(err), Js.Null_undefined.to_opt(value));
+let map_cb = (cb, err, value) => cb(Js.Null.toOption(err), Js.Null_undefined.toOption(value));
 
-let map_cb_err_only = (cb, err) => cb(Js.Null.to_opt(err));
+let map_cb_err_only = (cb, err) => cb(Js.Null.toOption(err));
 
 [@bs.scope "AsyncStorage"] [@bs.module "react-native"]
 external _getItem :
@@ -14,8 +14,8 @@ external _getItem :
 
 let getItem = (key, ~callback=?, ()) =>
   switch callback {
-  | None => Js.Promise.then_(to_opt, _getItem(key, Js.undefined))
-  | Some(cb) => Js.Promise.then_(to_opt, _getItem(key, Js.Undefined.return(map_cb(cb))))
+  | None => Js.Promise.then_(toOption, _getItem(key, Js.undefined))
+  | Some(cb) => Js.Promise.then_(toOption, _getItem(key, Js.Undefined.return(map_cb(cb))))
   };
 
 [@bs.scope "AsyncStorage"] [@bs.module "react-native"]
@@ -68,8 +68,8 @@ external _getAllKeys :
 
 let getAllKeys = (~callback=?, ()) =>
   switch callback {
-  | None => Js.Promise.then_(to_opt, _getAllKeys(Js.undefined))
-  | Some(cb) => Js.Promise.then_(to_opt, _getAllKeys(Js.Undefined.return(map_cb(cb))))
+  | None => Js.Promise.then_(toOption, _getAllKeys(Js.undefined))
+  | Some(cb) => Js.Promise.then_(toOption, _getAllKeys(Js.Undefined.return(map_cb(cb))))
   };
 
 [@bs.scope "AsyncStorage"] [@bs.module "react-native"] external flushGetRequests : unit => unit =
@@ -86,8 +86,8 @@ external _multiGet :
 
 let multiGet = (keys, ~callback=?, ()) =>
   switch callback {
-  | None => Js.Promise.then_(to_opt, _multiGet(keys, Js.undefined))
-  | Some(cb) => Js.Promise.then_(to_opt, _multiGet(keys, Js.Undefined.return(map_cb(cb))))
+  | None => Js.Promise.then_(toOption, _multiGet(keys, Js.undefined))
+  | Some(cb) => Js.Promise.then_(toOption, _multiGet(keys, Js.Undefined.return(map_cb(cb))))
   };
 
 [@bs.scope "AsyncStorage"] [@bs.module "react-native"]

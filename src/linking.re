@@ -14,7 +14,7 @@ external _getInitialURL : unit => Js.Promise.t(Js.Null.t(string)) =
 
 let getInitialURL = () =>
   _getInitialURL()
-  |> Js.Promise.then_((stringOrNull) => Js.Promise.resolve(Js.Null.to_opt(stringOrNull)));
+  |> Js.Promise.then_((stringOrNull) => Js.Promise.resolve(Js.Null.toOption(stringOrNull)));
 
 [@bs.scope "Linking"] [@bs.module "react-native"]
 external addEventListener : (string, {. "url": string} => unit) => unit =

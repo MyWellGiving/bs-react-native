@@ -49,7 +49,7 @@ type renderItem('item) = jsRenderBag('item) => ReasonReact.reactElement;
 
 let jsSectionToSection = (jsSection) => {
   data: jsSection##data,
-  key: Js.Undefined.to_opt(jsSection##key),
+  key: Js.Undefined.toOption(jsSection##key),
   /*** We set renderItem to None to avoid an infinite conversion loop */
   renderItem: None
 };
@@ -85,14 +85,14 @@ let separatorComponent =
   (jsSeparatorProps: jsSeparatorProps('item)) =>
     reSeparatorComponent({
       highlighted: Js.to_bool(jsSeparatorProps##highlighted),
-      leadingItem: Js.Undefined.to_opt(jsSeparatorProps##leadingItem),
+      leadingItem: Js.Undefined.toOption(jsSeparatorProps##leadingItem),
       leadingSection:
-        Js.Undefined.to_opt(jsSeparatorProps##leadingSection)
+        Js.Undefined.toOption(jsSeparatorProps##leadingSection)
         |> UtilsRN.option_map(jsSectionToSection),
       section: jsSectionToSection(jsSeparatorProps##section),
-      trailingItem: Js.Undefined.to_opt(jsSeparatorProps##trailingItem),
+      trailingItem: Js.Undefined.toOption(jsSeparatorProps##trailingItem),
       trailingSection:
-        Js.Undefined.to_opt(jsSeparatorProps##trailingSection)
+        Js.Undefined.toOption(jsSeparatorProps##trailingSection)
         |> UtilsRN.option_map(jsSectionToSection)
     });
 
