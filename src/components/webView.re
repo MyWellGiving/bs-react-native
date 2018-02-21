@@ -102,27 +102,27 @@ let make =
           ~accessibilityViewIsModal?,
           ~shouldRasterizeIOS?,
           {
-            "source": from_opt(source),
-            "style": from_opt(style),
-            "automaticallyAdjustContentInsets": from_opt(automaticallyAdjustContentInsets),
-            "contentInsets": from_opt(contentInsets),
-            "injectJavaScript": from_opt(injectJavaScript),
-            "injectedJavaScript": from_opt(injectedJavaScript),
-            "mediaPlaybackRequiresUserAction": from_opt(mediaPlaybackRequiresUserAction),
-            "onError": from_opt(onError),
-            "onLoad": from_opt(onLoad),
-            "onLoadEnd": from_opt(onLoadEnd),
-            "onLoadStart": from_opt(onLoadStart),
-            "onMessage": from_opt(onMessage),
-            "onNavigationStateChange": from_opt(onNavigationStateChange),
-            "renderError": from_opt(renderError),
-            "renderLoading": from_opt(renderLoading),
-            "scalesPageToFit": from_opt(scalesPageToFit),
-            "startInLoadingState": from_opt(startInLoadingState),
-            "domStorageEnabled": from_opt(domStorageEnabled),
-            "javaScriptEnabled": from_opt(javaScriptEnabled),
+            "source": fromOption(source),
+            "style": fromOption(style),
+            "automaticallyAdjustContentInsets": fromOption(automaticallyAdjustContentInsets),
+            "contentInsets": fromOption(contentInsets),
+            "injectJavaScript": fromOption(injectJavaScript),
+            "injectedJavaScript": fromOption(injectedJavaScript),
+            "mediaPlaybackRequiresUserAction": fromOption(mediaPlaybackRequiresUserAction),
+            "onError": fromOption(onError),
+            "onLoad": fromOption(onLoad),
+            "onLoadEnd": fromOption(onLoadEnd),
+            "onLoadStart": fromOption(onLoadStart),
+            "onMessage": fromOption(onMessage),
+            "onNavigationStateChange": fromOption(onNavigationStateChange),
+            "renderError": fromOption(renderError),
+            "renderLoading": fromOption(renderLoading),
+            "scalesPageToFit": fromOption(scalesPageToFit),
+            "startInLoadingState": fromOption(startInLoadingState),
+            "domStorageEnabled": fromOption(domStorageEnabled),
+            "javaScriptEnabled": fromOption(javaScriptEnabled),
             "mixedContentMode":
-              from_opt(
+              fromOption(
                 UtilsRN.option_map(
                   (contentMode) => {
                     let to_string =
@@ -135,12 +135,12 @@ let make =
                   mixedContentMode
                 )
               ),
-            "thirdPartyCookiesEnabled": from_opt(thirdPartyCookiesEnabled),
-            "userAgent": from_opt(userAgent),
-            "allowsInlineMediaPlayback": from_opt(allowsInlineMediaPlayback),
-            "bounces": from_opt(bounces),
+            "thirdPartyCookiesEnabled": fromOption(thirdPartyCookiesEnabled),
+            "userAgent": fromOption(userAgent),
+            "allowsInlineMediaPlayback": fromOption(allowsInlineMediaPlayback),
+            "bounces": fromOption(bounces),
             "dataDetectorTypes":
-              from_opt(
+              fromOption(
                 UtilsRN.option_map(
                   (dataDetectorType) => {
                     let to_string =
@@ -157,7 +157,7 @@ let make =
                 )
               ),
             "decelerationRate":
-              from_opt(
+              fromOption(
                 UtilsRN.option_map(
                   (rate) => {
                     let to_float =
@@ -170,8 +170,8 @@ let make =
                   decelerationRate
                 )
               ),
-            "onShouldStartLoadWithRequest": from_opt(onShouldStartLoadWithRequest),
-            "scrollEnabled": from_opt(scrollEnabled)
+            "onShouldStartLoadWithRequest": fromOption(onShouldStartLoadWithRequest),
+            "scrollEnabled": fromOption(scrollEnabled)
           }
         )
       )

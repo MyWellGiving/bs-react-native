@@ -50,10 +50,10 @@ module CreateComponent = (Impl: View.Impl) : TextComponent => {
       ~props=
         Js.Undefined.(
           {
-            "accessible": from_opt(UtilsRN.optBoolToOptJsBoolean(accessible)),
-            "allowFontScaling": from_opt(UtilsRN.optBoolToOptJsBoolean(allowFontScaling)),
+            "accessible": fromOption(UtilsRN.optBoolToOptJsBoolean(accessible)),
+            "allowFontScaling": fromOption(UtilsRN.optBoolToOptJsBoolean(allowFontScaling)),
             "ellipsizeMode":
-              from_opt(
+              fromOption(
                 UtilsRN.option_map(
                   fun
                   | `head => "head"
@@ -63,17 +63,17 @@ module CreateComponent = (Impl: View.Impl) : TextComponent => {
                   ellipsizeMode
                 )
               ),
-            "numberOfLines": from_opt(numberOfLines),
-            "onLayout": from_opt(onLayout),
-            "onLongPress": from_opt(onLongPress),
-            "onPress": from_opt(onPress),
-            "pressRetentionOffset": from_opt(pressRetentionOffset),
-            "selectable": from_opt(UtilsRN.optBoolToOptJsBoolean(selectable)),
-            "style": from_opt(style),
-            "testID": from_opt(testID),
-            "selectionColor": from_opt(selectionColor),
+            "numberOfLines": fromOption(numberOfLines),
+            "onLayout": fromOption(onLayout),
+            "onLongPress": fromOption(onLongPress),
+            "onPress": fromOption(onPress),
+            "pressRetentionOffset": fromOption(pressRetentionOffset),
+            "selectable": fromOption(UtilsRN.optBoolToOptJsBoolean(selectable)),
+            "style": fromOption(style),
+            "testID": fromOption(testID),
+            "selectionColor": fromOption(selectionColor),
             "textBreakStrategy":
-              from_opt(
+              fromOption(
                 UtilsRN.option_map(
                   fun
                   | `simple => "simple"
@@ -82,9 +82,9 @@ module CreateComponent = (Impl: View.Impl) : TextComponent => {
                   textBreakStrategy
                 )
               ),
-            "adjustsFontSizeToFit": from_opt(UtilsRN.optBoolToOptJsBoolean(adjustsFontSizeToFit)),
-            "minimumFontScale": from_opt(minimumFontScale),
-            "suppressHighlighting": from_opt(UtilsRN.optBoolToOptJsBoolean(suppressHighlighting))
+            "adjustsFontSizeToFit": fromOption(UtilsRN.optBoolToOptJsBoolean(adjustsFontSizeToFit)),
+            "minimumFontScale": fromOption(minimumFontScale),
+            "suppressHighlighting": fromOption(UtilsRN.optBoolToOptJsBoolean(suppressHighlighting))
           }
         ),
       switch value {

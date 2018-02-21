@@ -8,10 +8,10 @@ module Item = {
       ~props=
         Js.Undefined.(
           {
-            "label": from_opt(label),
-            "value": from_opt(value),
-            "color": from_opt(color),
-            "testID": from_opt(testID)
+            "label": fromOption(label),
+            "value": fromOption(value),
+            "color": fromOption(color),
+            "testID": fromOption(testID)
           }
         )
     );
@@ -58,12 +58,12 @@ let make =
       Props.extendView(
         Js.Undefined.(
           {
-            "enabled": from_opt(UtilsRN.optBoolToOptJsBoolean(enabled)),
-            "onValueChange": from_opt(onValueChange),
-            "selectedValue": from_opt(selectedValue),
-            "itemStyle": from_opt(itemStyle),
-            "prompt": from_opt(prompt),
-            "mode": from_opt(UtilsRN.option_map(encodeMode, mode))
+            "enabled": fromOption(UtilsRN.optBoolToOptJsBoolean(enabled)),
+            "onValueChange": fromOption(onValueChange),
+            "selectedValue": fromOption(selectedValue),
+            "itemStyle": fromOption(itemStyle),
+            "prompt": fromOption(prompt),
+            "mode": fromOption(UtilsRN.option_map(encodeMode, mode))
           }
         ),
         ~accessibilityLabel?,

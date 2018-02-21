@@ -9,7 +9,7 @@ module type Value = {type t; type rawJsType;};
 module CompositeAnimation = {
   type t;
   [@bs.send] external _start : (t, Js.undefined(Animation.endCallback)) => unit = "start";
-  let start = (t, ~callback=?, ()) => _start(t, Js.Undefined.from_opt(callback));
+  let start = (t, ~callback=?, ()) => _start(t, Js.Undefined.fromOption(callback));
   [@bs.send] external stop : t => unit = "";
   [@bs.send] external reset : t => unit = "";
 };
@@ -130,18 +130,18 @@ module Animations = {
               | `raw(x) => toValueRaw(x)
               | `animated(x) => toValueAnimated(x)
               },
-            "restDisplacementThreshold": from_opt(restDisplacementThreshold),
-            "overshootClamping": from_opt(overshootClamping),
-            "restSpeedThreshold": from_opt(restSpeedThreshold),
-            "velocity": from_opt(velocity),
-            "bounciness": from_opt(bounciness),
-            "speed": from_opt(speed),
-            "tension": from_opt(tension),
-            "friction": from_opt(friction),
-            "isInteraction": from_opt(isInteraction),
-            "useNativeDriver": from_opt(useNativeDriver),
-            "onComplete": from_opt(onComplete),
-            "iterations": from_opt(iterations)
+            "restDisplacementThreshold": fromOption(restDisplacementThreshold),
+            "overshootClamping": fromOption(overshootClamping),
+            "restSpeedThreshold": fromOption(restSpeedThreshold),
+            "velocity": fromOption(velocity),
+            "bounciness": fromOption(bounciness),
+            "speed": fromOption(speed),
+            "tension": fromOption(tension),
+            "friction": fromOption(friction),
+            "isInteraction": fromOption(isInteraction),
+            "useNativeDriver": fromOption(useNativeDriver),
+            "onComplete": fromOption(onComplete),
+            "iterations": fromOption(iterations)
           }
         )
       );
@@ -284,9 +284,9 @@ module Value = {
   [@bs.send] external _resetAnimation : (t, Js.Undefined.t(callback)) => unit = "resetAnimation";
   [@bs.send] external _stopAnimation : (t, Js.Undefined.t(callback)) => unit = "stopAnimation";
   let resetAnimation = (value, ~callback=?, ()) =>
-    _resetAnimation(value, Js.Undefined.from_opt(callback));
+    _resetAnimation(value, Js.Undefined.fromOption(callback));
   let stopAnimation = (value, ~callback=?, ()) =>
-    _stopAnimation(value, Js.Undefined.from_opt(callback));
+    _stopAnimation(value, Js.Undefined.fromOption(callback));
   [@bs.send] external _interpolate : (t, Interpolation.config) => Interpolation.t = "interpolate";
   let interpolate =
       (

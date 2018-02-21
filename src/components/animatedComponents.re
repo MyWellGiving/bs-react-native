@@ -34,7 +34,7 @@ module ScrollView = {
         [|
           {
             "nativeEvent": {
-              "contentOffset": {"x": Js.Undefined.from_opt(x), "y": Js.Undefined.from_opt(y)}
+              "contentOffset": {"x": Js.Undefined.fromOption(x), "y": Js.Undefined.fromOption(y)}
             }
           }
         |],

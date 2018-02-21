@@ -42,13 +42,13 @@ let make =
     ~props=
       Js.Undefined.(
         {
-          "onLayout": from_opt(onLayout),
-          "onError": from_opt(onError),
-          "onLoad": from_opt(onLoad),
-          "onLoadEnd": from_opt(onLoadEnd),
-          "onLoadStart": from_opt(onLoadStart),
+          "onLayout": fromOption(onLayout),
+          "onError": fromOption(onError),
+          "onLoad": fromOption(onLoad),
+          "onLoadEnd": fromOption(onLoadEnd),
+          "onLoadStart": fromOption(onLoadStart),
           "resizeMode":
-            from_opt(
+            fromOption(
               UtilsRN.option_map(
                 (x) =>
                   switch x {
@@ -62,7 +62,7 @@ let make =
               )
             ),
           "source":
-            from_opt(
+            fromOption(
               UtilsRN.option_map(
                 (x: Image.imageSource) =>
                   switch x {
@@ -73,11 +73,11 @@ let make =
                 source
               )
             ),
-          "style": from_opt(style),
-          "imageStyle": from_opt(imageStyle),
-          "testID": from_opt(testID),
+          "style": fromOption(style),
+          "imageStyle": fromOption(imageStyle),
+          "testID": fromOption(testID),
           "resizeMethod":
-            from_opt(
+            fromOption(
               UtilsRN.option_map(
                 (x) =>
                   switch x {
@@ -88,12 +88,12 @@ let make =
                 resizeMethod
               )
             ),
-          "accessibilityLabel": from_opt(accessibilityLabel),
-          "accessible": from_opt(UtilsRN.optBoolToOptJsBoolean(accessible)),
-          "blurRadius": from_opt(blurRadius),
-          "capInsets": from_opt(capInsets),
+          "accessibilityLabel": fromOption(accessibilityLabel),
+          "accessible": fromOption(UtilsRN.optBoolToOptJsBoolean(accessible)),
+          "blurRadius": fromOption(blurRadius),
+          "capInsets": fromOption(capInsets),
           "defaultSource":
-            from_opt(
+            fromOption(
               UtilsRN.option_map(
                 (x: Image.defaultSource) =>
                   switch x {
@@ -103,8 +103,8 @@ let make =
                 defaultSource
               )
             ),
-          "onPartialLoad": from_opt(onPartialLoad),
-          "onProgress": from_opt(UtilsRN.option_map((x, y) => x(Event.progress(y)), onProgress))
+          "onPartialLoad": fromOption(onPartialLoad),
+          "onProgress": fromOption(UtilsRN.option_map((x, y) => x(Event.progress(y)), onProgress))
         }
       )
   );

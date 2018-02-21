@@ -169,10 +169,10 @@ module CreateComponent = (Impl: View.Impl) : ScrollViewComponent => {
         Props.extendView(
           Js.Undefined.(
             {
-              "contentContainerStyle": from_opt(contentContainerStyle),
-              "horizontal": from_opt(UtilsRN.optBoolToOptJsBoolean(horizontal)),
+              "contentContainerStyle": fromOption(contentContainerStyle),
+              "horizontal": fromOption(UtilsRN.optBoolToOptJsBoolean(horizontal)),
               "keyboardDismissMode":
-                from_opt(
+                fromOption(
                   UtilsRN.option_map(
                     (x) =>
                       switch x {
@@ -184,7 +184,7 @@ module CreateComponent = (Impl: View.Impl) : ScrollViewComponent => {
                   )
                 ),
               "keyboardShouldPersistTaps":
-                from_opt(
+                fromOption(
                   UtilsRN.option_map(
                     (x) =>
                       switch x {
@@ -195,19 +195,19 @@ module CreateComponent = (Impl: View.Impl) : ScrollViewComponent => {
                     keyboardShouldPersistTaps
                   )
                 ),
-              "onContentSizeChange": from_opt(onContentSizeChange),
-              "onScroll": from_opt(onScroll),
-              "pagingEnabled": from_opt(UtilsRN.optBoolToOptJsBoolean(pagingEnabled)),
-              "refreshControl": from_opt(refreshControl),
-              "scrollEnabled": from_opt(UtilsRN.optBoolToOptJsBoolean(scrollEnabled)),
+              "onContentSizeChange": fromOption(onContentSizeChange),
+              "onScroll": fromOption(onScroll),
+              "pagingEnabled": fromOption(UtilsRN.optBoolToOptJsBoolean(pagingEnabled)),
+              "refreshControl": fromOption(refreshControl),
+              "scrollEnabled": fromOption(UtilsRN.optBoolToOptJsBoolean(scrollEnabled)),
               "showsHorizontalScrollIndicator":
-                from_opt(UtilsRN.optBoolToOptJsBoolean(showsHorizontalScrollIndicator)),
+                fromOption(UtilsRN.optBoolToOptJsBoolean(showsHorizontalScrollIndicator)),
               "showsVerticalScrollIndicator":
-                from_opt(UtilsRN.optBoolToOptJsBoolean(showsVerticalScrollIndicator)),
+                fromOption(UtilsRN.optBoolToOptJsBoolean(showsVerticalScrollIndicator)),
               "stickyHeaderIndices":
-                from_opt(UtilsRN.option_map(Array.of_list, stickyHeaderIndices)),
+                fromOption(UtilsRN.option_map(Array.of_list, stickyHeaderIndices)),
               "overScrollMode":
-                from_opt(
+                fromOption(
                   UtilsRN.option_map(
                     (x) =>
                       switch x {
@@ -218,21 +218,21 @@ module CreateComponent = (Impl: View.Impl) : ScrollViewComponent => {
                     overScrollMode
                   )
                 ),
-              "scrollPerfTag": from_opt(scrollPerfTag),
+              "scrollPerfTag": fromOption(scrollPerfTag),
               "alwaysBounceHorizontal":
-                from_opt(UtilsRN.optBoolToOptJsBoolean(alwaysBounceHorizontal)),
-              "alwaysBounceVertical": from_opt(UtilsRN.optBoolToOptJsBoolean(alwaysBounceVertical)),
+                fromOption(UtilsRN.optBoolToOptJsBoolean(alwaysBounceHorizontal)),
+              "alwaysBounceVertical": fromOption(UtilsRN.optBoolToOptJsBoolean(alwaysBounceVertical)),
               "automaticallyAdjustContentInsets":
-                from_opt(UtilsRN.optBoolToOptJsBoolean(automaticallyAdjustContentInsets)),
-              "bounces": from_opt(UtilsRN.optBoolToOptJsBoolean(bounces)),
+                fromOption(UtilsRN.optBoolToOptJsBoolean(automaticallyAdjustContentInsets)),
+              "bounces": fromOption(UtilsRN.optBoolToOptJsBoolean(bounces)),
               "canCancelContentTouches":
-                from_opt(UtilsRN.optBoolToOptJsBoolean(canCancelContentTouches)),
-              "centerContent": from_opt(UtilsRN.optBoolToOptJsBoolean(centerContent)),
-              "contentInset": from_opt(contentInset),
+                fromOption(UtilsRN.optBoolToOptJsBoolean(canCancelContentTouches)),
+              "centerContent": fromOption(UtilsRN.optBoolToOptJsBoolean(centerContent)),
+              "contentInset": fromOption(contentInset),
               "contentOffset":
-                from_opt(UtilsRN.option_map(({x, y}) => {"x": x, "y": y}, contentOffset)),
+                fromOption(UtilsRN.option_map(({x, y}) => {"x": x, "y": y}, contentOffset)),
               "decelerationRate":
-                from_opt(
+                fromOption(
                   UtilsRN.option_map(
                     (x) =>
                       switch x {
@@ -243,9 +243,9 @@ module CreateComponent = (Impl: View.Impl) : ScrollViewComponent => {
                   )
                 ),
               "directionalLockEnabled":
-                from_opt(UtilsRN.optBoolToOptJsBoolean(directionalLockEnabled)),
+                fromOption(UtilsRN.optBoolToOptJsBoolean(directionalLockEnabled)),
               "indicatorStyle":
-                from_opt(
+                fromOption(
                   UtilsRN.option_map(
                     (x) =>
                       switch x {
@@ -256,14 +256,14 @@ module CreateComponent = (Impl: View.Impl) : ScrollViewComponent => {
                     indicatorStyle
                   )
                 ),
-              "maximumZoomScale": from_opt(maximumZoomScale),
-              "minimumZoomScale": from_opt(minimumZoomScale),
-              "onScrollAnimationEnd": from_opt(onScrollAnimationEnd),
-              "scrollEventThrottle": from_opt(scrollEventThrottle),
-              "scrollIndicatorInsets": from_opt(scrollIndicatorInsets),
-              "scrollsToTop": from_opt(UtilsRN.optBoolToOptJsBoolean(scrollsToTop)),
+              "maximumZoomScale": fromOption(maximumZoomScale),
+              "minimumZoomScale": fromOption(minimumZoomScale),
+              "onScrollAnimationEnd": fromOption(onScrollAnimationEnd),
+              "scrollEventThrottle": fromOption(scrollEventThrottle),
+              "scrollIndicatorInsets": fromOption(scrollIndicatorInsets),
+              "scrollsToTop": fromOption(UtilsRN.optBoolToOptJsBoolean(scrollsToTop)),
               "snapToAlignment":
-                from_opt(
+                fromOption(
                   UtilsRN.option_map(
                     (x) =>
                       switch x {
@@ -274,7 +274,7 @@ module CreateComponent = (Impl: View.Impl) : ScrollViewComponent => {
                     snapToAlignment
                   )
                 ),
-              "zoomScale": from_opt(zoomScale)
+              "zoomScale": fromOption(zoomScale)
             }
           ),
           ~accessibilityLabel?,

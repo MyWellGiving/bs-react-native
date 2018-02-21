@@ -28,21 +28,21 @@ let make =
     ~props=
       Js.Undefined.(
         {
-          "accessible": from_opt(UtilsRN.optBoolToOptJsBoolean(accessible)),
-          "accessibilityLabel": from_opt(accessibilityLabel),
-          "delayLongPress": from_opt(delayLongPress),
-          "delayPressIn": from_opt(delayPressIn),
-          "delayPressOut": from_opt(delayPressOut),
-          "disabled": from_opt(UtilsRN.optBoolToOptJsBoolean(disabled)),
-          "hitSlop": from_opt(hitSlop),
-          "style": from_opt(style),
-          "onLayout": from_opt(onLayout),
-          "onPress": from_opt(onPress),
-          "onPressIn": from_opt(onPressIn),
-          "onPressOut": from_opt(onPressOut),
-          "pressRetentionOffset": from_opt(pressRetentionOffset),
+          "accessible": fromOption(UtilsRN.optBoolToOptJsBoolean(accessible)),
+          "accessibilityLabel": fromOption(accessibilityLabel),
+          "delayLongPress": fromOption(delayLongPress),
+          "delayPressIn": fromOption(delayPressIn),
+          "delayPressOut": fromOption(delayPressOut),
+          "disabled": fromOption(UtilsRN.optBoolToOptJsBoolean(disabled)),
+          "hitSlop": fromOption(hitSlop),
+          "style": fromOption(style),
+          "onLayout": fromOption(onLayout),
+          "onPress": fromOption(onPress),
+          "onPressIn": fromOption(onPressIn),
+          "onPressOut": fromOption(onPressOut),
+          "pressRetentionOffset": fromOption(pressRetentionOffset),
           "accessibilityComponentType":
-            from_opt(
+            fromOption(
               UtilsRN.option_map(
                 (x) =>
                   switch x {
@@ -55,7 +55,7 @@ let make =
               )
             ),
           "accessibilityTraits":
-            from_opt(
+            fromOption(
               UtilsRN.option_map(
                 (traits) => {
                   let to_string =
@@ -82,9 +82,9 @@ let make =
                 accessibilityTraits
               )
             ),
-          "focusedOpacity": from_opt(focusedOpacity),
-          "activeOpacity": from_opt(activeOpacity),
-          "tvParallaxProperties": from_opt(tvParallaxProperties)
+          "focusedOpacity": fromOption(focusedOpacity),
+          "activeOpacity": fromOption(activeOpacity),
+          "tvParallaxProperties": fromOption(tvParallaxProperties)
         }
       )
   );

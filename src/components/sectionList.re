@@ -71,8 +71,8 @@ let sections = (reSections) : sections('item) =>
   Array.map(
     (reSection) => {
       "data": reSection.data,
-      "key": Js.Undefined.from_opt(reSection.key),
-      "renderItem": Js.Undefined.from_opt(UtilsRN.option_map(renderItem, reSection.renderItem))
+      "key": Js.Undefined.fromOption(reSection.key),
+      "renderItem": Js.Undefined.fromOption(UtilsRN.option_map(renderItem, reSection.renderItem))
     },
     reSections
   );
@@ -174,22 +174,22 @@ let make:
             "sections": sections,
             "renderItem": renderItem,
             "keyExtractor": keyExtractor,
-            "ItemSeparatorComponent": from_opt(itemSeparatorComponent),
-            "ListEmptyComponent": from_opt(listEmptyComponent),
-            "ListFooterComponent": from_opt(listFooterComponent),
-            "ListHeaderComponent": from_opt(listHeaderComponent),
-            "SectionSeparatorComponent": from_opt(sectionSeparatorComponent),
-            "extraData": from_opt(extraData),
-            "initialNumToRender": from_opt(initialNumToRender),
-            "onEndReached": from_opt(onEndReached),
-            "onEndReachedThreshold": from_opt(onEndReachedThreshold),
-            "onRefresh": from_opt(onRefresh),
-            "onViewableItemsChanged": from_opt(onViewableItemsChanged),
-            "refreshing": from_opt(UtilsRN.optBoolToOptJsBoolean(refreshing)),
-            "renderSectionHeader": from_opt(renderSectionHeader),
-            "renderSectionFooter": from_opt(renderSectionFooter),
+            "ItemSeparatorComponent": fromOption(itemSeparatorComponent),
+            "ListEmptyComponent": fromOption(listEmptyComponent),
+            "ListFooterComponent": fromOption(listFooterComponent),
+            "ListHeaderComponent": fromOption(listHeaderComponent),
+            "SectionSeparatorComponent": fromOption(sectionSeparatorComponent),
+            "extraData": fromOption(extraData),
+            "initialNumToRender": fromOption(initialNumToRender),
+            "onEndReached": fromOption(onEndReached),
+            "onEndReachedThreshold": fromOption(onEndReachedThreshold),
+            "onRefresh": fromOption(onRefresh),
+            "onViewableItemsChanged": fromOption(onViewableItemsChanged),
+            "refreshing": fromOption(UtilsRN.optBoolToOptJsBoolean(refreshing)),
+            "renderSectionHeader": fromOption(renderSectionHeader),
+            "renderSectionFooter": fromOption(renderSectionFooter),
             "stickySectionHeadersEnabled":
-              from_opt(UtilsRN.optBoolToOptJsBoolean(stickySectionHeadersEnabled))
+              fromOption(UtilsRN.optBoolToOptJsBoolean(stickySectionHeadersEnabled))
           }
         ),
       _children

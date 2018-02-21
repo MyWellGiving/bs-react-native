@@ -160,23 +160,23 @@ module CreateComponent = (Impl: View.Impl) : ImageComponent => {
       ~props=
         Js.Undefined.(
           {
-            "onLayout": from_opt(onLayout),
-            "onError": from_opt(onError),
-            "onLoad": from_opt(onLoad),
-            "onLoadEnd": from_opt(onLoadEnd),
-            "onLoadStart": from_opt(onLoadStart),
-            "resizeMode": from_opt(UtilsRN.option_map(encodeResizeMode, resizeMode)),
-            "source": from_opt(UtilsRN.option_map(encodeSource, source)),
-            "style": from_opt(style),
-            "testID": from_opt(testID),
-            "resizeMethod": from_opt(UtilsRN.option_map(encodeResizeMethod, resizeMethod)),
-            "accessibilityLabel": from_opt(accessibilityLabel),
-            "accessible": from_opt(UtilsRN.optBoolToOptJsBoolean(accessible)),
-            "blurRadius": from_opt(blurRadius),
-            "capInsets": from_opt(capInsets),
-            "defaultSource": from_opt(UtilsRN.option_map(encodeDefaultSource, defaultSource)),
-            "onPartialLoad": from_opt(onPartialLoad),
-            "onProgress": from_opt(UtilsRN.option_map((x, y) => x(Event.progress(y)), onProgress))
+            "onLayout": fromOption(onLayout),
+            "onError": fromOption(onError),
+            "onLoad": fromOption(onLoad),
+            "onLoadEnd": fromOption(onLoadEnd),
+            "onLoadStart": fromOption(onLoadStart),
+            "resizeMode": fromOption(UtilsRN.option_map(encodeResizeMode, resizeMode)),
+            "source": fromOption(UtilsRN.option_map(encodeSource, source)),
+            "style": fromOption(style),
+            "testID": fromOption(testID),
+            "resizeMethod": fromOption(UtilsRN.option_map(encodeResizeMethod, resizeMethod)),
+            "accessibilityLabel": fromOption(accessibilityLabel),
+            "accessible": fromOption(UtilsRN.optBoolToOptJsBoolean(accessible)),
+            "blurRadius": fromOption(blurRadius),
+            "capInsets": fromOption(capInsets),
+            "defaultSource": fromOption(UtilsRN.option_map(encodeDefaultSource, defaultSource)),
+            "onPartialLoad": fromOption(onPartialLoad),
+            "onProgress": fromOption(UtilsRN.option_map((x, y) => x(Event.progress(y)), onProgress))
           }
         )
     );

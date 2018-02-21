@@ -43,13 +43,13 @@ let make =
       Props.extendView(
         Js.Undefined.(
           {
-            "date": from_opt(date),
-            "onDateChange": from_opt(onDateChange),
-            "maximumDate": from_opt(maximumDate),
-            "minimumDate": from_opt(minimumDate),
-            "mode": from_opt(UtilsRN.option_map(encodeMode, mode)),
-            "minuteInterval": from_opt(minuteInterval),
-            "timeZoneOffsetInMinutes": from_opt(timeZoneOffsetInMinutes)
+            "date": fromOption(date),
+            "onDateChange": fromOption(onDateChange),
+            "maximumDate": fromOption(maximumDate),
+            "minimumDate": fromOption(minimumDate),
+            "mode": fromOption(UtilsRN.option_map(encodeMode, mode)),
+            "minuteInterval": fromOption(minuteInterval),
+            "timeZoneOffsetInMinutes": fromOption(timeZoneOffsetInMinutes)
           }
         ),
         ~accessibilityLabel?,

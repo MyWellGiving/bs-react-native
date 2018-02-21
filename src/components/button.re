@@ -6,12 +6,12 @@ let make = (~accessibilityLabel=?, ~color=?, ~disabled=?, ~onPress=?, ~testID=?,
     ~props=
       Js.Undefined.(
         {
-          "accessibilityLabel": from_opt(accessibilityLabel),
-          "color": from_opt(color),
-          "disabled": from_opt(UtilsRN.optBoolToOptJsBoolean(disabled)),
-          "onPress": from_opt(onPress),
-          "testID": from_opt(testID),
-          "title": from_opt(title)
+          "accessibilityLabel": fromOption(accessibilityLabel),
+          "color": fromOption(color),
+          "disabled": fromOption(UtilsRN.optBoolToOptJsBoolean(disabled)),
+          "onPress": fromOption(onPress),
+          "testID": fromOption(testID),
+          "title": fromOption(title)
         }
       )
   );

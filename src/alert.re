@@ -36,15 +36,15 @@ external _alert :
 
 let alert = (~title, ~message=?, ~buttons=?, ~options=?, ~type_=?, ()) => {
   open Js.Undefined;
-  let msg = from_opt(message);
+  let msg = fromOption(message);
   let transformButtons = (xs) =>
     Array.of_list(xs)
     |> Array.map(
          ({text, onPress, style}) => {
-           "text": from_opt(text),
-           "onPress": from_opt(onPress),
+           "text": fromOption(text),
+           "onPress": fromOption(onPress),
            "style":
-             from_opt(
+             fromOption(
                UtilsRN.option_map(
                  (x) =>
                    switch x {
@@ -57,19 +57,19 @@ let alert = (~title, ~message=?, ~buttons=?, ~options=?, ~type_=?, ()) => {
              )
          }
        );
-  let bts = from_opt(UtilsRN.option_map(transformButtons, buttons));
+  let bts = fromOption(UtilsRN.option_map(transformButtons, buttons));
   let opts =
-    from_opt(
+    fromOption(
       UtilsRN.option_map(
         ({cancelable, onDismiss}) => {
-          "cancelable": from_opt(UtilsRN.optBoolToOptJsBoolean(cancelable)),
-          "onDismiss": from_opt(onDismiss)
+          "cancelable": fromOption(UtilsRN.optBoolToOptJsBoolean(cancelable)),
+          "onDismiss": fromOption(onDismiss)
         },
         options
       )
     );
   let t_ =
-    from_opt(
+    fromOption(
       UtilsRN.option_map(
         (x) =>
           switch x {

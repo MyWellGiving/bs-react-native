@@ -32,15 +32,15 @@ let make =
     ~props=
       Js.Undefined.(
         {
-          "animationType": from_opt(UtilsRN.option_map(encodeAnimationType, animationType)),
-          "onShow": from_opt(onShow),
-          "transparent": from_opt(UtilsRN.optBoolToOptJsBoolean(transparent)),
-          "visible": from_opt(UtilsRN.optBoolToOptJsBoolean(visible)),
-          "hardwareAccelerated": from_opt(UtilsRN.optBoolToOptJsBoolean(hardwareAccelerated)),
-          "onRequestClose": from_opt(onRequestClose),
-          "onOrientationChange": from_opt(onOrientationChange),
+          "animationType": fromOption(UtilsRN.option_map(encodeAnimationType, animationType)),
+          "onShow": fromOption(onShow),
+          "transparent": fromOption(UtilsRN.optBoolToOptJsBoolean(transparent)),
+          "visible": fromOption(UtilsRN.optBoolToOptJsBoolean(visible)),
+          "hardwareAccelerated": fromOption(UtilsRN.optBoolToOptJsBoolean(hardwareAccelerated)),
+          "onRequestClose": fromOption(onRequestClose),
+          "onOrientationChange": fromOption(onOrientationChange),
           "supportedOrientations":
-            from_opt(UtilsRN.option_map(encodeSupportedOrientations, supportedOrientations))
+            fromOption(UtilsRN.option_map(encodeSupportedOrientations, supportedOrientations))
         }
       )
   );
