@@ -423,7 +423,21 @@ type listStyleType =
   | Unset
   | Custom(string);
 
-let listStyleType: listStyleType => styleElement;
+type listStylePosition =
+  | Inside
+  | Outside
+  | Inherit
+  | Initial
+  | Unset;
+
+let listStyle:
+  (
+    ~type_: listStyleType,
+    ~image: string=?,
+    ~position: listStylePosition=?,
+    unit
+  ) =>
+  styleElement;
 
 type cursor =
   | Auto

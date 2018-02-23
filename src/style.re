@@ -751,23 +751,49 @@ type listStyleType =
   | Unset
   | Custom(string);
 
-let listStyleType = v =>
+let string_of_listStyleType =
+  fun
+  | Disc => "disc"
+  | Circle => "circle"
+  | Square => "square"
+  | Decimal => "decimal"
+  | Georgian => "georgian"
+  | CJKIdeographic => "cjk-ideographic"
+  | Kannada => "kannada"
+  | None => "none"
+  | Inherit => "inherit"
+  | Initial => "initial"
+  | Unset => "unset"
+  | Custom(string) => string;
+
+type listStylePosition =
+  | Inside
+  | Outside
+  | Inherit
+  | Initial
+  | Unset;
+
+let string_of_listStylePosition =
+  fun
+  | Inside => "inside"
+  | Outside => "outside"
+  | Inherit => "inherit"
+  | Initial => "initial"
+  | Unset => "unset";
+
+let listStyle =
+    (~type_: listStyleType, ~image: string="", ~position=Outside, ()) =>
   stringStyle(
-    "listStyleType",
-    switch v {
-    | Disc => "disc"
-    | Circle => "circle"
-    | Square => "square"
-    | Decimal => "decimal"
-    | Georgian => "georgian"
-    | CJKIdeographic => "cjk-ideographic"
-    | Kannada => "kannada"
-    | None => "none"
-    | Inherit => "inherit"
-    | Initial => "initial"
-    | Unset => "unset"
-    | Custom(string) => string
-    }
+    "listStyle",
+    (type_ |> string_of_listStyleType)
+    ++ (
+      switch image {
+      | "" => ""
+      | s => " " ++ s
+      }
+    )
+    ++ " "
+    ++ (position |> string_of_listStylePosition)
   );
 
 type cursor =

@@ -1,26 +1,32 @@
 type error;
 
-let toOption = (x) => Js.Promise.resolve(Js.Null_undefined.toOption(x));
+let toOption = x => Js.Promise.resolve(Js.Null_undefined.to_opt(x));
 
-let map_cb = (cb, err, value) => cb(Js.Null.toOption(err), Js.Null_undefined.toOption(value));
+let map_cb = (cb, err, value) =>
+  cb(Js.Null.toOption(err), Js.Null_undefined.to_opt(value));
 
 let map_cb_err_only = (cb, err) => cb(Js.Null.toOption(err));
 
 [@bs.scope "AsyncStorage"] [@bs.module "react-native"]
 external _getItem :
-  (string, Js.Undefined.t(((Js.Null.t(error), Js.Null_undefined.t(string)) => unit))) =>
+  (
+    string,
+    Js.Undefined.t((Js.Null.t(error), Js.Null_undefined.t(string)) => unit)
+  ) =>
   Js.Promise.t(Js.Null_undefined.t(string)) =
   "getItem";
 
 let getItem = (key, ~callback=?, ()) =>
   switch callback {
   | None => Js.Promise.then_(toOption, _getItem(key, Js.undefined))
-  | Some(cb) => Js.Promise.then_(toOption, _getItem(key, Js.Undefined.return(map_cb(cb))))
+  | Some(cb) =>
+    Js.Promise.then_(toOption, _getItem(key, Js.Undefined.return(map_cb(cb))))
   };
 
 [@bs.scope "AsyncStorage"] [@bs.module "react-native"]
 external _setItem :
-  (string, string, Js.Undefined.t((Js.Null.t(error) => unit))) => Js.Promise.t(unit) =
+  (string, string, Js.Undefined.t(Js.Null.t(error) => unit)) =>
+  Js.Promise.t(unit) =
   "setItem";
 
 let setItem = (key, value, ~callback=?, ()) =>
@@ -30,7 +36,8 @@ let setItem = (key, value, ~callback=?, ()) =>
   };
 
 [@bs.scope "AsyncStorage"] [@bs.module "react-native"]
-external _removeItem : (string, Js.Undefined.t((Js.Null.t(error) => unit))) => Js.Promise.t(unit) =
+external _removeItem :
+  (string, Js.Undefined.t(Js.Null.t(error) => unit)) => Js.Promise.t(unit) =
   "removeItem";
 
 let removeItem = (key, ~callback=?, ()) =>
@@ -41,17 +48,20 @@ let removeItem = (key, ~callback=?, ()) =>
 
 [@bs.scope "AsyncStorage"] [@bs.module "react-native"]
 external _mergeItem :
-  (string, string, Js.Undefined.t((Js.Null.t(error) => unit))) => Js.Promise.t(unit) =
+  (string, string, Js.Undefined.t(Js.Null.t(error) => unit)) =>
+  Js.Promise.t(unit) =
   "mergeItem";
 
 let mergeItem = (key, value, ~callback=?, ()) =>
   switch callback {
   | None => _mergeItem(key, value, Js.undefined)
-  | Some(cb) => _mergeItem(key, value, Js.Undefined.return(map_cb_err_only(cb)))
+  | Some(cb) =>
+    _mergeItem(key, value, Js.Undefined.return(map_cb_err_only(cb)))
   };
 
 [@bs.scope "AsyncStorage"] [@bs.module "react-native"]
-external _clear : Js.Undefined.t((Js.Null.t(error) => unit)) => Js.Promise.t(unit) =
+external _clear :
+  Js.Undefined.t(Js.Null.t(error) => unit) => Js.Promise.t(unit) =
   "clear";
 
 let clear = (~callback=?, ()) =>
@@ -62,24 +72,30 @@ let clear = (~callback=?, ()) =>
 
 [@bs.scope "AsyncStorage"] [@bs.module "react-native"]
 external _getAllKeys :
-  Js.Undefined.t(((Js.Null.t(error), Js.Null_undefined.t(array(string))) => unit)) =>
+  Js.Undefined.t(
+    (Js.Null.t(error), Js.Null_undefined.t(array(string))) => unit
+  ) =>
   Js.Promise.t(Js.Null_undefined.t(array(string))) =
   "getAllKeys";
 
 let getAllKeys = (~callback=?, ()) =>
   switch callback {
   | None => Js.Promise.then_(toOption, _getAllKeys(Js.undefined))
-  | Some(cb) => Js.Promise.then_(toOption, _getAllKeys(Js.Undefined.return(map_cb(cb))))
+  | Some(cb) =>
+    Js.Promise.then_(toOption, _getAllKeys(Js.Undefined.return(map_cb(cb))))
   };
 
-[@bs.scope "AsyncStorage"] [@bs.module "react-native"] external flushGetRequests : unit => unit =
-  "";
+[@bs.scope "AsyncStorage"] [@bs.module "react-native"]
+external flushGetRequests : unit => unit = "";
 
 [@bs.scope "AsyncStorage"] [@bs.module "react-native"]
 external _multiGet :
   (
     array(string),
-    Js.Undefined.t(((Js.Null.t(array(error)), Js.Null_undefined.t(array(array(string)))) => unit))
+    Js.Undefined.t(
+      (Js.Null.t(array(error)), Js.Null_undefined.t(array(array(string)))) =>
+      unit
+    )
   ) =>
   Js.Promise.t(Js.Null_undefined.t(array(array(string)))) =
   "multiGet";
@@ -87,25 +103,35 @@ external _multiGet :
 let multiGet = (keys, ~callback=?, ()) =>
   switch callback {
   | None => Js.Promise.then_(toOption, _multiGet(keys, Js.undefined))
-  | Some(cb) => Js.Promise.then_(toOption, _multiGet(keys, Js.Undefined.return(map_cb(cb))))
+  | Some(cb) =>
+    Js.Promise.then_(
+      toOption,
+      _multiGet(keys, Js.Undefined.return(map_cb(cb)))
+    )
   };
 
 [@bs.scope "AsyncStorage"] [@bs.module "react-native"]
 external _multiSet :
-  (array(array(string)), Js.Undefined.t((Js.Null.t(array(error)) => unit))) => Js.Promise.t(unit) =
+  (array(array(string)), Js.Undefined.t(Js.Null.t(array(error)) => unit)) =>
+  Js.Promise.t(unit) =
   "multiSet";
 
 let multiSet = (keyValues, ~callback=?, ()) => {
   let combine = ((key, value)) => [|key, value|];
   switch callback {
   | None => _multiSet(Array.map(combine, keyValues), Js.undefined)
-  | Some(cb) => _multiSet(Array.map(combine, keyValues), Js.Undefined.return(map_cb_err_only(cb)))
-  }
+  | Some(cb) =>
+    _multiSet(
+      Array.map(combine, keyValues),
+      Js.Undefined.return(map_cb_err_only(cb))
+    )
+  };
 };
 
 [@bs.scope "AsyncStorage"] [@bs.module "react-native"]
 external _multiRemove :
-  (array(string), Js.Undefined.t((Js.Null.t(array(error)) => unit))) => Js.Promise.t(unit) =
+  (array(string), Js.Undefined.t(Js.Null.t(array(error)) => unit)) =>
+  Js.Promise.t(unit) =
   "multiRemove";
 
 let multiRemove = (keys, ~callback=?, ()) =>
@@ -116,7 +142,8 @@ let multiRemove = (keys, ~callback=?, ()) =>
 
 [@bs.scope "AsyncStorage"] [@bs.module "react-native"]
 external _multiMerge :
-  (array(array(string)), Js.Undefined.t((Js.Null.t(array(error)) => unit))) => Js.Promise.t(unit) =
+  (array(array(string)), Js.Undefined.t(Js.Null.t(array(error)) => unit)) =>
+  Js.Promise.t(unit) =
   "multiMerge";
 
 let multiMerge = (keyValues, ~callback=?, ()) => {
@@ -124,6 +151,9 @@ let multiMerge = (keyValues, ~callback=?, ()) => {
   switch callback {
   | None => _multiMerge(Array.map(combine, keyValues), Js.undefined)
   | Some(cb) =>
-    _multiMerge(Array.map(combine, keyValues), Js.Undefined.return(map_cb_err_only(cb)))
-  }
+    _multiMerge(
+      Array.map(combine, keyValues),
+      Js.Undefined.return(map_cb_err_only(cb))
+    )
+  };
 };
