@@ -9,21 +9,29 @@ type iOSLoadRequestEvent = {
   "title": string,
   "canGoForward": bool,
   "navigationType": string,
-  "url": string
+  "url": string,
 };
 
 type source;
 
 [@bs.obj]
 external source :
-  (~uri: string=?, ~method: string=?, ~headers: Js.t('a)=?, ~body: string=?, unit) => source =
+  (
+    ~uri: string=?,
+    ~method: string=?,
+    ~headers: Js.t('a)=?,
+    ~body: string=?,
+    unit
+  ) =>
+  source =
   "";
 
 type contentInsets;
 
 [@bs.obj]
 external contentInsets :
-  (~top: int=?, ~left: int=?, ~bottom: int=?, ~right: int=?, unit) => contentInsets =
+  (~top: int=?, ~left: int=?, ~bottom: int=?, ~right: int=?, unit) =>
+  contentInsets =
   "";
 
 let make =
@@ -74,7 +82,7 @@ let make =
       ~dataDetectorTypes=?,
       ~decelerationRate=?,
       ~onShouldStartLoadWithRequest=?,
-      ~scrollEnabled=?
+      ~scrollEnabled=?,
     ) =>
   ReasonReact.wrapJsForReason(
     ~reactClass=view,
@@ -104,11 +112,13 @@ let make =
           {
             "source": fromOption(source),
             "style": fromOption(style),
-            "automaticallyAdjustContentInsets": fromOption(automaticallyAdjustContentInsets),
+            "automaticallyAdjustContentInsets":
+              fromOption(automaticallyAdjustContentInsets),
             "contentInsets": fromOption(contentInsets),
             "injectJavaScript": fromOption(injectJavaScript),
             "injectedJavaScript": fromOption(injectedJavaScript),
-            "mediaPlaybackRequiresUserAction": fromOption(mediaPlaybackRequiresUserAction),
+            "mediaPlaybackRequiresUserAction":
+              fromOption(mediaPlaybackRequiresUserAction),
             "onError": fromOption(onError),
             "onLoad": fromOption(onLoad),
             "onLoadEnd": fromOption(onLoadEnd),
@@ -124,25 +134,26 @@ let make =
             "mixedContentMode":
               fromOption(
                 UtilsRN.option_map(
-                  (contentMode) => {
+                  contentMode => {
                     let to_string =
                       fun
                       | `never => "never"
                       | `always => "always"
                       | `compatibility => "compatibility";
-                    contentMode |> List.map(to_string) |> Array.of_list
+                    contentMode |> List.map(to_string) |> Array.of_list;
                   },
-                  mixedContentMode
-                )
+                  mixedContentMode,
+                ),
               ),
             "thirdPartyCookiesEnabled": fromOption(thirdPartyCookiesEnabled),
             "userAgent": fromOption(userAgent),
-            "allowsInlineMediaPlayback": fromOption(allowsInlineMediaPlayback),
+            "allowsInlineMediaPlayback":
+              fromOption(allowsInlineMediaPlayback),
             "bounces": fromOption(bounces),
             "dataDetectorTypes":
               fromOption(
                 UtilsRN.option_map(
-                  (dataDetectorType) => {
+                  dataDetectorType => {
                     let to_string =
                       fun
                       | `phoneNumber => "phoneNumber"
@@ -151,28 +162,29 @@ let make =
                       | `calendarEvent => "calendarEvent"
                       | `none => "none"
                       | `all => "all";
-                    dataDetectorType |> List.map(to_string) |> Array.of_list
+                    dataDetectorType |> List.map(to_string) |> Array.of_list;
                   },
-                  dataDetectorTypes
-                )
+                  dataDetectorTypes,
+                ),
               ),
             "decelerationRate":
               fromOption(
                 UtilsRN.option_map(
-                  (rate) => {
+                  rate => {
                     let to_float =
                       fun
                       | `normal => 0.998
                       | `fast => 0.99
                       | `value(f) => f;
-                    rate |> List.map(to_float) |> Array.of_list
+                    rate |> List.map(to_float) |> Array.of_list;
                   },
-                  decelerationRate
-                )
+                  decelerationRate,
+                ),
               ),
-            "onShouldStartLoadWithRequest": fromOption(onShouldStartLoadWithRequest),
-            "scrollEnabled": fromOption(scrollEnabled)
-          }
+            "onShouldStartLoadWithRequest":
+              fromOption(onShouldStartLoadWithRequest),
+            "scrollEnabled": fromOption(scrollEnabled),
+          },
         )
-      )
+      ),
   );

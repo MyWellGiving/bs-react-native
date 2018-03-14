@@ -1,19 +1,20 @@
 module type ScrollViewComponent = {
   type point = {
     x: float,
-    y: float
+    y: float,
   };
-  let scrollTo: (ReasonReact.reactRef, ~x: int, ~y: int, ~animated: bool) => unit;
+  let scrollTo:
+    (ReasonReact.reactRef, ~x: int, ~y: int, ~animated: bool) => unit;
   let scrollToEnd: (ReasonReact.reactRef, ~animated: bool) => unit;
   let make:
     (
       ~accessibilityLabel: ReasonReact.reactElement=?,
       ~accessible: bool=?,
-      ~hitSlop: TypesRN.insets=?,
+      ~hitSlop: Types.insets=?,
       ~onAccessibilityTap: unit => unit=?,
       ~onLayout: RNEvent.NativeLayoutEvent.t => unit=?,
       ~onMagicTap: unit => unit=?,
-      ~responderHandlers: Props.touchResponderHandlers=?,
+      ~responderHandlers: Types.touchResponderHandlers=?,
       ~pointerEvents: [ | `auto | `none | `boxNone | `boxOnly]=?,
       ~removeClippedSubviews: bool=?,
       ~style: Style.t=?,
@@ -27,7 +28,8 @@ module type ScrollViewComponent = {
                                      =?,
       ~accessibilityLiveRegion: [ | `none | `polite | `assertive]=?,
       ~collapsable: bool=?,
-      ~importantForAccessibility: [ | `auto | `yes | `no | `noHideDescendants]=?,
+      ~importantForAccessibility: [ | `auto | `yes | `no | `noHideDescendants]
+                                    =?,
       ~needsOffscreenAlphaCompositing: bool=?,
       ~renderToHardwareTextureAndroid: bool=?,
       ~accessibilityTraits: list(
@@ -49,7 +51,7 @@ module type ScrollViewComponent = {
                                 | `adjustable
                                 | `allowsDirectInteraction
                                 | `pageTurn
-                              ]
+                              ],
                             )
                               =?,
       ~accessibilityViewIsModal: bool=?,
@@ -74,7 +76,7 @@ module type ScrollViewComponent = {
       ~bounces: bool=?,
       ~canCancelContentTouches: bool=?,
       ~centerContent: bool=?,
-      ~contentInset: TypesRN.insets=?,
+      ~contentInset: Types.insets=?,
       ~contentOffset: point=?,
       ~decelerationRate: [ | `fast | `normal]=?,
       ~directionalLockEnabled: bool=?,
@@ -83,28 +85,46 @@ module type ScrollViewComponent = {
       ~minimumZoomScale: float=?,
       ~onScrollAnimationEnd: unit => unit=?,
       ~scrollEventThrottle: int=?,
-      ~scrollIndicatorInsets: TypesRN.insets=?,
+      ~scrollIndicatorInsets: Types.insets=?,
       ~scrollsToTop: bool=?,
       ~snapToAlignment: [ | `center | `start | `end_]=?,
       ~zoomScale: float=?,
       array(ReasonReact.reactElement)
     ) =>
-    ReasonReact.component(ReasonReact.stateless, ReasonReact.noRetainedProps, unit);
+    ReasonReact.component(
+      ReasonReact.stateless,
+      ReasonReact.noRetainedProps,
+      unit,
+    );
 };
 
 module CreateComponent = (Impl: View.Impl) : ScrollViewComponent => {
   type point = {
     x: float,
-    y: float
+    y: float,
   };
   [@bs.send]
   external _scrollTo :
-    (ReasonReact.reactRef, {. "x": int, "y": int, "animated": Js.boolean}) => unit =
+    (
+      ReasonReact.reactRef,
+      {
+        .
+        "x": int,
+        "y": int,
+        "animated": Js.boolean,
+      }
+    ) =>
+    unit =
     "scrollTo";
-  [@bs.send] external _scrollToEnd : (ReasonReact.reactRef, {. "animated": Js.boolean}) => unit =
+  [@bs.send]
+  external _scrollToEnd :
+    (ReasonReact.reactRef, {. "animated": Js.boolean}) => unit =
     "scrollToEnd";
   let scrollTo = (ref, ~x, ~y, ~animated) =>
-    _scrollTo(ref, {"x": x, "y": y, "animated": Js.Boolean.to_js_boolean(animated)});
+    _scrollTo(
+      ref,
+      {"x": x, "y": y, "animated": Js.Boolean.to_js_boolean(animated)},
+    );
   let scrollToEnd = (ref, ~animated) =>
     _scrollToEnd(ref, {"animated": Js.Boolean.to_js_boolean(animated)});
   let make =
@@ -161,7 +181,7 @@ module CreateComponent = (Impl: View.Impl) : ScrollViewComponent => {
         ~scrollIndicatorInsets=?,
         ~scrollsToTop=?,
         ~snapToAlignment=?,
-        ~zoomScale=?
+        ~zoomScale=?,
       ) =>
     ReasonReact.wrapJsForReason(
       ~reactClass=Impl.view,
@@ -170,111 +190,142 @@ module CreateComponent = (Impl: View.Impl) : ScrollViewComponent => {
           Js.Undefined.(
             {
               "contentContainerStyle": fromOption(contentContainerStyle),
-              "horizontal": fromOption(UtilsRN.optBoolToOptJsBoolean(horizontal)),
+              "horizontal":
+                fromOption(UtilsRN.optBoolToOptJsBoolean(horizontal)),
               "keyboardDismissMode":
                 fromOption(
                   UtilsRN.option_map(
-                    (x) =>
-                      switch x {
+                    x =>
+                      switch (x) {
                       | `interactive => "interactive"
                       | `none => "none"
                       | `onDrag => "on-drag"
                       },
-                    keyboardDismissMode
-                  )
+                    keyboardDismissMode,
+                  ),
                 ),
               "keyboardShouldPersistTaps":
                 fromOption(
                   UtilsRN.option_map(
-                    (x) =>
-                      switch x {
+                    x =>
+                      switch (x) {
                       | `always => "always"
                       | `never => "never"
                       | `handled => "handled"
                       },
-                    keyboardShouldPersistTaps
-                  )
+                    keyboardShouldPersistTaps,
+                  ),
                 ),
               "onContentSizeChange": fromOption(onContentSizeChange),
               "onScroll": fromOption(onScroll),
-              "pagingEnabled": fromOption(UtilsRN.optBoolToOptJsBoolean(pagingEnabled)),
+              "pagingEnabled":
+                fromOption(UtilsRN.optBoolToOptJsBoolean(pagingEnabled)),
               "refreshControl": fromOption(refreshControl),
-              "scrollEnabled": fromOption(UtilsRN.optBoolToOptJsBoolean(scrollEnabled)),
+              "scrollEnabled":
+                fromOption(UtilsRN.optBoolToOptJsBoolean(scrollEnabled)),
               "showsHorizontalScrollIndicator":
-                fromOption(UtilsRN.optBoolToOptJsBoolean(showsHorizontalScrollIndicator)),
+                fromOption(
+                  UtilsRN.optBoolToOptJsBoolean(
+                    showsHorizontalScrollIndicator,
+                  ),
+                ),
               "showsVerticalScrollIndicator":
-                fromOption(UtilsRN.optBoolToOptJsBoolean(showsVerticalScrollIndicator)),
+                fromOption(
+                  UtilsRN.optBoolToOptJsBoolean(showsVerticalScrollIndicator),
+                ),
               "stickyHeaderIndices":
-                fromOption(UtilsRN.option_map(Array.of_list, stickyHeaderIndices)),
+                fromOption(
+                  UtilsRN.option_map(Array.of_list, stickyHeaderIndices),
+                ),
               "overScrollMode":
                 fromOption(
                   UtilsRN.option_map(
-                    (x) =>
-                      switch x {
+                    x =>
+                      switch (x) {
                       | `always => "always"
                       | `never => "never"
                       | `auto => "auto"
                       },
-                    overScrollMode
-                  )
+                    overScrollMode,
+                  ),
                 ),
               "scrollPerfTag": fromOption(scrollPerfTag),
               "alwaysBounceHorizontal":
-                fromOption(UtilsRN.optBoolToOptJsBoolean(alwaysBounceHorizontal)),
-              "alwaysBounceVertical": fromOption(UtilsRN.optBoolToOptJsBoolean(alwaysBounceVertical)),
+                fromOption(
+                  UtilsRN.optBoolToOptJsBoolean(alwaysBounceHorizontal),
+                ),
+              "alwaysBounceVertical":
+                fromOption(
+                  UtilsRN.optBoolToOptJsBoolean(alwaysBounceVertical),
+                ),
               "automaticallyAdjustContentInsets":
-                fromOption(UtilsRN.optBoolToOptJsBoolean(automaticallyAdjustContentInsets)),
+                fromOption(
+                  UtilsRN.optBoolToOptJsBoolean(
+                    automaticallyAdjustContentInsets,
+                  ),
+                ),
               "bounces": fromOption(UtilsRN.optBoolToOptJsBoolean(bounces)),
               "canCancelContentTouches":
-                fromOption(UtilsRN.optBoolToOptJsBoolean(canCancelContentTouches)),
-              "centerContent": fromOption(UtilsRN.optBoolToOptJsBoolean(centerContent)),
+                fromOption(
+                  UtilsRN.optBoolToOptJsBoolean(canCancelContentTouches),
+                ),
+              "centerContent":
+                fromOption(UtilsRN.optBoolToOptJsBoolean(centerContent)),
               "contentInset": fromOption(contentInset),
               "contentOffset":
-                fromOption(UtilsRN.option_map(({x, y}) => {"x": x, "y": y}, contentOffset)),
+                fromOption(
+                  UtilsRN.option_map(
+                    ({x, y}) => {"x": x, "y": y},
+                    contentOffset,
+                  ),
+                ),
               "decelerationRate":
                 fromOption(
                   UtilsRN.option_map(
-                    (x) =>
-                      switch x {
+                    x =>
+                      switch (x) {
                       | `fast => "fast"
                       | `normal => "normal"
                       },
-                    decelerationRate
-                  )
+                    decelerationRate,
+                  ),
                 ),
               "directionalLockEnabled":
-                fromOption(UtilsRN.optBoolToOptJsBoolean(directionalLockEnabled)),
+                fromOption(
+                  UtilsRN.optBoolToOptJsBoolean(directionalLockEnabled),
+                ),
               "indicatorStyle":
                 fromOption(
                   UtilsRN.option_map(
-                    (x) =>
-                      switch x {
+                    x =>
+                      switch (x) {
                       | `default => "default"
                       | `black => "black"
                       | `white => "white"
                       },
-                    indicatorStyle
-                  )
+                    indicatorStyle,
+                  ),
                 ),
               "maximumZoomScale": fromOption(maximumZoomScale),
               "minimumZoomScale": fromOption(minimumZoomScale),
               "onScrollAnimationEnd": fromOption(onScrollAnimationEnd),
               "scrollEventThrottle": fromOption(scrollEventThrottle),
               "scrollIndicatorInsets": fromOption(scrollIndicatorInsets),
-              "scrollsToTop": fromOption(UtilsRN.optBoolToOptJsBoolean(scrollsToTop)),
+              "scrollsToTop":
+                fromOption(UtilsRN.optBoolToOptJsBoolean(scrollsToTop)),
               "snapToAlignment":
                 fromOption(
                   UtilsRN.option_map(
-                    (x) =>
-                      switch x {
+                    x =>
+                      switch (x) {
                       | `center => "center"
                       | `start => "start"
                       | `end_ => "end"
                       },
-                    snapToAlignment
-                  )
+                    snapToAlignment,
+                  ),
                 ),
-              "zoomScale": fromOption(zoomScale)
+              "zoomScale": fromOption(zoomScale),
             }
           ),
           ~accessibilityLabel?,
@@ -296,14 +347,15 @@ module CreateComponent = (Impl: View.Impl) : ScrollViewComponent => {
           ~renderToHardwareTextureAndroid?,
           ~accessibilityTraits?,
           ~accessibilityViewIsModal?,
-          ~shouldRasterizeIOS?
-        )
+          ~shouldRasterizeIOS?,
+        ),
     );
 };
 
 include
   CreateComponent(
     {
-      [@bs.module "react-native"] external view : ReasonReact.reactClass = "ScrollView";
-    }
+      [@bs.module "react-native"]
+      external view : ReasonReact.reactClass = "ScrollView";
+    },
   );

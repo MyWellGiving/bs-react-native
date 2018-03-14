@@ -1,13 +1,14 @@
 open Image;
 
-[@bs.module "react-native"] external view : ReasonReact.reactClass = "ImageBackground";
+[@bs.module "react-native"]
+external view : ReasonReact.reactClass = "ImageBackground";
 
 module Event = {
   type t;
   type error;
   type progress = {
     loaded: float,
-    total: float
+    total: float,
   };
   [@bs.get] external progress : t => progress = "nativeEvent";
 };
@@ -35,7 +36,7 @@ let make =
       ~capInsets=?,
       ~defaultSource=?,
       ~onPartialLoad=?,
-      ~onProgress=?
+      ~onProgress=?,
     ) =>
   ReasonReact.wrapJsForReason(
     ~reactClass=view,
@@ -50,28 +51,28 @@ let make =
           "resizeMode":
             fromOption(
               UtilsRN.option_map(
-                (x) =>
-                  switch x {
+                x =>
+                  switch (x) {
                   | `cover => "cover"
                   | `contain => "contain"
                   | `stretch => "stretch"
                   | `repeat => "repeat"
                   | `center => "center"
                   },
-                resizeMode
-              )
+                resizeMode,
+              ),
             ),
           "source":
             fromOption(
               UtilsRN.option_map(
                 (x: Image.imageSource) =>
-                  switch x {
+                  switch (x) {
                   | URI(x) => rawImageSourceJS(x)
                   | Required(x) => rawImageSourceJS(x)
                   | Multiple(x) => rawImageSourceJS(Array.of_list(x))
                   },
-                source
-              )
+                source,
+              ),
             ),
           "style": fromOption(style),
           "imageStyle": fromOption(imageStyle),
@@ -79,32 +80,39 @@ let make =
           "resizeMethod":
             fromOption(
               UtilsRN.option_map(
-                (x) =>
-                  switch x {
+                x =>
+                  switch (x) {
                   | `auto => "auto"
                   | `resize => "resize"
                   | `scale => "scale"
                   },
-                resizeMethod
-              )
+                resizeMethod,
+              ),
             ),
           "accessibilityLabel": fromOption(accessibilityLabel),
-          "accessible": fromOption(UtilsRN.optBoolToOptJsBoolean(accessible)),
+          "accessible":
+            fromOption(UtilsRN.optBoolToOptJsBoolean(accessible)),
           "blurRadius": fromOption(blurRadius),
           "capInsets": fromOption(capInsets),
           "defaultSource":
             fromOption(
               UtilsRN.option_map(
                 (x: Image.defaultSource) =>
-                  switch x {
+                  switch (x) {
                   | URI(x) => rawImageSourceJS(x)
                   | Required(x) => rawImageSourceJS(x)
                   },
-                defaultSource
-              )
+                defaultSource,
+              ),
             ),
           "onPartialLoad": fromOption(onPartialLoad),
-          "onProgress": fromOption(UtilsRN.option_map((x, y) => x(Event.progress(y)), onProgress))
+          "onProgress":
+            fromOption(
+              UtilsRN.option_map(
+                (x, y) => x(Event.progress(y)),
+                onProgress,
+              ),
+            ),
         }
-      )
+      ),
   );

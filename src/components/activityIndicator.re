@@ -1,7 +1,8 @@
-[@bs.module "react-native"] external view : ReasonReact.reactClass = "ActivityIndicator";
+[@bs.module "react-native"]
+external view : ReasonReact.reactClass = "ActivityIndicator";
 
-let encodeSize = (size) =>
-  switch size {
+let encodeSize = size =>
+  switch (size) {
   | `small => Encode.string("small")
   | `large => Encode.string("large")
   | `exact(x) => Encode.int(x)
@@ -32,7 +33,7 @@ let make =
       ~renderToHardwareTextureAndroid=?,
       ~accessibilityTraits=?,
       ~accessibilityViewIsModal=?,
-      ~shouldRasterizeIOS=?
+      ~shouldRasterizeIOS=?,
     ) =>
   ReasonReact.wrapJsForReason(
     ~reactClass=view,
@@ -43,7 +44,8 @@ let make =
             "animating": fromOption(UtilsRN.optBoolToOptJsBoolean(animating)),
             "color": fromOption(color),
             "size": fromOption(UtilsRN.option_map(encodeSize, size)),
-            "hidesWhenStopped": fromOption(UtilsRN.optBoolToOptJsBoolean(hidesWhenStopped))
+            "hidesWhenStopped":
+              fromOption(UtilsRN.optBoolToOptJsBoolean(hidesWhenStopped)),
           }
         ),
         ~accessibilityLabel?,
@@ -65,6 +67,6 @@ let make =
         ~renderToHardwareTextureAndroid?,
         ~accessibilityTraits?,
         ~accessibilityViewIsModal?,
-        ~shouldRasterizeIOS?
-      )
+        ~shouldRasterizeIOS?,
+      ),
   );

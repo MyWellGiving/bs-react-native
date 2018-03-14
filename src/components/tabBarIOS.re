@@ -1,7 +1,6 @@
 module Item = {
   [@bs.scope "TabBarIOS"] [@bs.module "react-native"]
-  external tabBarItemIOS : ReasonReact.reactClass =
-    "Item";
+  external tabBarItemIOS : ReasonReact.reactClass = "Item";
   let make =
       (
         ~title: option(string)=?,
@@ -32,7 +31,7 @@ module Item = {
         ~renderToHardwareTextureAndroid=?,
         ~accessibilityTraits=?,
         ~accessibilityViewIsModal=?,
-        ~shouldRasterizeIOS=?
+        ~shouldRasterizeIOS=?,
       ) =>
     ReasonReact.wrapJsForReason(
       ~reactClass=tabBarItemIOS,
@@ -45,11 +44,14 @@ module Item = {
               "badge": fromOption(badge),
               "icon": fromOption(icon),
               "onPress": fromOption(onPress),
-              "renderAsOriginal": fromOption(UtilsRN.optBoolToOptJsBoolean(renderAsOriginal)),
-              "selected": fromOption(UtilsRN.optBoolToOptJsBoolean(selected)),
+              "renderAsOriginal":
+                fromOption(UtilsRN.optBoolToOptJsBoolean(renderAsOriginal)),
+              "selected":
+                fromOption(UtilsRN.optBoolToOptJsBoolean(selected)),
               "selectedIcon": fromOption(selectedIcon),
               "style": fromOption(style),
-              "isTVSelectable": fromOption(UtilsRN.optBoolToOptJsBoolean(isTVSelectable))
+              "isTVSelectable":
+                fromOption(UtilsRN.optBoolToOptJsBoolean(isTVSelectable)),
             }
           ),
           ~accessibilityLabel?,
@@ -71,12 +73,13 @@ module Item = {
           ~renderToHardwareTextureAndroid?,
           ~accessibilityTraits?,
           ~accessibilityViewIsModal?,
-          ~shouldRasterizeIOS?
-        )
+          ~shouldRasterizeIOS?,
+        ),
     );
 };
 
-[@bs.module "react-native"] external tabBarIOS : ReasonReact.reactClass = "TabBarIOS";
+[@bs.module "react-native"]
+external tabBarIOS : ReasonReact.reactClass = "TabBarIOS";
 
 let make =
     (
@@ -105,7 +108,7 @@ let make =
       ~renderToHardwareTextureAndroid=?,
       ~accessibilityTraits=?,
       ~accessibilityViewIsModal=?,
-      ~shouldRasterizeIOS=?
+      ~shouldRasterizeIOS=?,
     ) =>
   ReasonReact.wrapJsForReason(
     ~reactClass=tabBarIOS,
@@ -117,19 +120,20 @@ let make =
             "itemPositioning":
               fromOption(
                 UtilsRN.option_map(
-                  (x) =>
-                    switch x {
+                  x =>
+                    switch (x) {
                     | `fill => "fill"
                     | `center => "center"
                     | `auto => "auto"
                     },
-                  itemPositioning
-                )
+                  itemPositioning,
+                ),
               ),
             "tintColor": fromOption(tintColor),
-            "translucent": fromOption(UtilsRN.optBoolToOptJsBoolean(translucent)),
+            "translucent":
+              fromOption(UtilsRN.optBoolToOptJsBoolean(translucent)),
             "unselectedItemTintColor": fromOption(unselectedItemTintColor),
-            "unselectedTintColor": fromOption(unselectedTintColor)
+            "unselectedTintColor": fromOption(unselectedTintColor),
           }
         ),
         ~accessibilityLabel?,
@@ -151,6 +155,6 @@ let make =
         ~renderToHardwareTextureAndroid?,
         ~accessibilityTraits?,
         ~accessibilityViewIsModal?,
-        ~shouldRasterizeIOS?
-      )
+        ~shouldRasterizeIOS?,
+      ),
   );

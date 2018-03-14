@@ -1,8 +1,9 @@
-[@bs.module "react-native"] external view : ReasonReact.reactClass = "RefreshControl";
+[@bs.module "react-native"]
+external view : ReasonReact.reactClass = "RefreshControl";
 
 let make =
     (
-      ~onRefresh: option((unit => unit))=?,
+      ~onRefresh: option(unit => unit)=?,
       ~refreshing: option(bool)=?,
       ~colors: option(array(string))=?,
       ~enabled: option(bool)=?,
@@ -30,7 +31,7 @@ let make =
       ~renderToHardwareTextureAndroid=?,
       ~accessibilityTraits=?,
       ~accessibilityViewIsModal=?,
-      ~shouldRasterizeIOS=?
+      ~shouldRasterizeIOS=?,
     ) =>
   ReasonReact.wrapJsForReason(
     ~reactClass=view,
@@ -39,14 +40,15 @@ let make =
         Js.Undefined.(
           {
             "onRefresh": fromOption(onRefresh),
-            "refreshing": fromOption(UtilsRN.optBoolToOptJsBoolean(refreshing)),
+            "refreshing":
+              fromOption(UtilsRN.optBoolToOptJsBoolean(refreshing)),
             "colors": fromOption(colors),
             "enabled": fromOption(UtilsRN.optBoolToOptJsBoolean(enabled)),
             "progressBackgroundColor": fromOption(progressBackgroundColor),
             "progressViewOffset": fromOption(progressViewOffset),
             "tintColor": fromOption(tintColor),
             "title": fromOption(title),
-            "titleColor": fromOption(titleColor)
+            "titleColor": fromOption(titleColor),
           }
         ),
         ~accessibilityLabel?,
@@ -68,6 +70,6 @@ let make =
         ~renderToHardwareTextureAndroid?,
         ~accessibilityTraits?,
         ~accessibilityViewIsModal?,
-        ~shouldRasterizeIOS?
-      )
+        ~shouldRasterizeIOS?,
+      ),
   );

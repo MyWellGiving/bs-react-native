@@ -20,7 +20,8 @@ module type ImageComponent = {
     | Multiple(list(imageURISource));
   type defaultURISource;
   let defaultURISource:
-    (~uri: string, ~scale: float=?, ~width: float=?, ~height: float=?, unit) => defaultURISource;
+    (~uri: string, ~scale: float=?, ~width: float=?, ~height: float=?, unit) =>
+    defaultURISource;
   type defaultSource =
     | URI(defaultURISource)
     | Required(Packager.required);
@@ -28,7 +29,7 @@ module type ImageComponent = {
     type error;
     type progress = {
       loaded: float,
-      total: float
+      total: float,
     };
   };
   let make:
@@ -46,13 +47,17 @@ module type ImageComponent = {
       ~accessibilityLabel: string=?,
       ~accessible: bool=?,
       ~blurRadius: float=?,
-      ~capInsets: TypesRN.insets=?,
+      ~capInsets: Types.insets=?,
       ~defaultSource: defaultSource=?,
       ~onPartialLoad: unit => unit=?,
       ~onProgress: Event.progress => unit=?,
       array(ReasonReact.reactElement)
     ) =>
-    ReasonReact.component(ReasonReact.stateless, ReasonReact.noRetainedProps, unit);
+    ReasonReact.component(
+      ReasonReact.stateless,
+      ReasonReact.noRetainedProps,
+      unit,
+    );
 };
 
 module CreateComponent = (Impl: View.Impl) : ImageComponent => {
@@ -65,19 +70,11 @@ module CreateComponent = (Impl: View.Impl) : ImageComponent => {
       ~method: string=?,
       ~headers: Js.t('a)=?,
       ~body: string=?,
-      /*
-       * Be careful not to refmt this away !!!
-       * https://github.com/facebook/reason/issues/821 (resolved, not released yet)
-       *
-       * This is hot it should look (or to copy it in again ^^)
-       *  cache::[ | `default | `reload | `forceCache [@bs.as "force-cache"] | `onlyIfCached  [@bs.as "only-if-cached"]] [@bs.string]? =>
-       */
-      ~cache: [@bs.string]
-              [
+      ~cache: [@bs.string] [
                 | `default
                 | `reload
-                [@bs.as "force-cache"] | `forceCache
-                [@bs.as "only-if-cached"] | `onlyIfCached
+                | [@bs.as "force-cache"] `forceCache
+                | [@bs.as "only-if-cached"] `onlyIfCached
               ]
                 =?,
       ~scale: float=?,
@@ -94,7 +91,8 @@ module CreateComponent = (Impl: View.Impl) : ImageComponent => {
   type defaultURISource;
   [@bs.obj]
   external defaultURISource :
-    (~uri: string, ~scale: float=?, ~width: float=?, ~height: float=?, unit) => defaultURISource =
+    (~uri: string, ~scale: float=?, ~width: float=?, ~height: float=?, unit) =>
+    defaultURISource =
     "";
   type defaultSource =
     | URI(defaultURISource)
@@ -106,12 +104,12 @@ module CreateComponent = (Impl: View.Impl) : ImageComponent => {
     type error;
     type progress = {
       loaded: float,
-      total: float
+      total: float,
     };
     [@bs.get] external progress : t => progress = "nativeEvent";
   };
-  let encodeResizeMode = (x) =>
-    switch x {
+  let encodeResizeMode = x =>
+    switch (x) {
     | `cover => "cover"
     | `contain => "contain"
     | `stretch => "stretch"
@@ -119,19 +117,19 @@ module CreateComponent = (Impl: View.Impl) : ImageComponent => {
     | `center => "center"
     };
   let encodeSource = (x: imageSource) =>
-    switch x {
+    switch (x) {
     | URI(x) => rawImageSourceJS(x)
     | Required(x) => rawImageSourceJS(x)
     | Multiple(x) => rawImageSourceJS(Array.of_list(x))
     };
-  let encodeResizeMethod = (x) =>
-    switch x {
+  let encodeResizeMethod = x =>
+    switch (x) {
     | `auto => "auto"
     | `resize => "resize"
     | `scale => "scale"
     };
   let encodeDefaultSource = (x: defaultSource) =>
-    switch x {
+    switch (x) {
     | URI(x) => rawImageSourceJS(x)
     | Required(x) => rawImageSourceJS(x)
     };
@@ -153,7 +151,7 @@ module CreateComponent = (Impl: View.Impl) : ImageComponent => {
         ~capInsets=?,
         ~defaultSource=?,
         ~onPartialLoad=?,
-        ~onProgress=?
+        ~onProgress=?,
       ) =>
     ReasonReact.wrapJsForReason(
       ~reactClass=Impl.view,
@@ -165,26 +163,41 @@ module CreateComponent = (Impl: View.Impl) : ImageComponent => {
             "onLoad": fromOption(onLoad),
             "onLoadEnd": fromOption(onLoadEnd),
             "onLoadStart": fromOption(onLoadStart),
-            "resizeMode": fromOption(UtilsRN.option_map(encodeResizeMode, resizeMode)),
+            "resizeMode":
+              fromOption(UtilsRN.option_map(encodeResizeMode, resizeMode)),
             "source": fromOption(UtilsRN.option_map(encodeSource, source)),
             "style": fromOption(style),
             "testID": fromOption(testID),
-            "resizeMethod": fromOption(UtilsRN.option_map(encodeResizeMethod, resizeMethod)),
+            "resizeMethod":
+              fromOption(
+                UtilsRN.option_map(encodeResizeMethod, resizeMethod),
+              ),
             "accessibilityLabel": fromOption(accessibilityLabel),
-            "accessible": fromOption(UtilsRN.optBoolToOptJsBoolean(accessible)),
+            "accessible":
+              fromOption(UtilsRN.optBoolToOptJsBoolean(accessible)),
             "blurRadius": fromOption(blurRadius),
             "capInsets": fromOption(capInsets),
-            "defaultSource": fromOption(UtilsRN.option_map(encodeDefaultSource, defaultSource)),
+            "defaultSource":
+              fromOption(
+                UtilsRN.option_map(encodeDefaultSource, defaultSource),
+              ),
             "onPartialLoad": fromOption(onPartialLoad),
-            "onProgress": fromOption(UtilsRN.option_map((x, y) => x(Event.progress(y)), onProgress))
+            "onProgress":
+              fromOption(
+                UtilsRN.option_map(
+                  (x, y) => x(Event.progress(y)),
+                  onProgress,
+                ),
+              ),
           }
-        )
+        ),
     );
 };
 
 include
   CreateComponent(
     {
-      [@bs.module "react-native"] external view : ReasonReact.reactClass = "Image";
-    }
+      [@bs.module "react-native"]
+      external view : ReasonReact.reactClass = "Image";
+    },
   );
