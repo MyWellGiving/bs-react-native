@@ -488,3 +488,13 @@ let borderRightStyle: borderStyle => styleElement;
 let borderBottomStyle: borderStyle => styleElement;
 
 let borderLeftStyle: borderStyle => styleElement;
+
+type userSelect =
+  | None
+  | Text
+  | Auto
+  | Inherit
+  | Initial
+  | Unset;
+
+let userSelect: userSelect => styleElement;

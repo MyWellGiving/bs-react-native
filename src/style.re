@@ -933,3 +933,24 @@ let borderCollapse = v =>
     | Separate => "separate"
     },
   );
+
+type userSelect =
+  | None
+  | Text
+  | Auto
+  | Inherit
+  | Initial
+  | Unset;
+
+let userSelect = v =>
+  stringStyle(
+    "userSelect",
+    switch (v) {
+    | None => "none"
+    | Text => "text"
+    | Auto => "auto"
+    | Inherit => "inherit"
+    | Initial => "initial"
+    | Unset => "unset"
+    },
+  );
