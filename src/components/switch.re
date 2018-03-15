@@ -4,7 +4,7 @@ let make =
     (
       ~disabled: option(bool)=?,
       ~onTintColor: option(string)=?,
-      ~onValueChange: option((bool => unit))=?,
+      ~onValueChange: option(bool => unit)=?,
       ~thumbTintColor: option(string)=?,
       ~tintColor: option(string)=?,
       ~value: option(bool)=?,
@@ -27,7 +27,7 @@ let make =
       ~renderToHardwareTextureAndroid=?,
       ~accessibilityTraits=?,
       ~accessibilityViewIsModal=?,
-      ~shouldRasterizeIOS=?
+      ~shouldRasterizeIOS=?,
     ) =>
   ReasonReact.wrapJsForReason(
     ~reactClass=view,
@@ -40,7 +40,7 @@ let make =
             "onValueChange": fromOption(onValueChange),
             "onTintColor": fromOption(onTintColor),
             "thumbTintColor": fromOption(thumbTintColor),
-            "tintColor": fromOption(tintColor)
+            "tintColor": fromOption(tintColor),
           }
         ),
         ~accessibilityLabel?,
@@ -62,6 +62,6 @@ let make =
         ~renderToHardwareTextureAndroid?,
         ~accessibilityTraits?,
         ~accessibilityViewIsModal?,
-        ~shouldRasterizeIOS?
-      )
+        ~shouldRasterizeIOS?,
+      ),
   );

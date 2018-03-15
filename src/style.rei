@@ -22,6 +22,10 @@ type float_interpolated_animated =
   | Animated(AnimatedRe.Value.t)
   | Interpolated(AnimatedRe.Interpolation.t);
 
+type string_interpolated =
+  | String(string)
+  | Interpolated(AnimatedRe.Interpolation.t);
+
 let style: list(styleElement) => t;
 
 
@@ -194,7 +198,7 @@ let direction: direction => styleElement;
 /***
  * Shadow Props
  */
-let shadowColor: string => styleElement;
+let shadowColor: string_interpolated => styleElement;
 
 let shadowOffset: (~height: float, ~width: float) => styleElement;
 
@@ -263,17 +267,17 @@ type backfaceVisibility =
 
 let backfaceVisibility: backfaceVisibility => styleElement;
 
-let backgroundColor: string => styleElement;
+let backgroundColor: string_interpolated => styleElement;
 
-let borderColor: string => styleElement;
+let borderColor: string_interpolated => styleElement;
 
-let borderTopColor: string => styleElement;
+let borderTopColor: string_interpolated => styleElement;
 
-let borderRightColor: string => styleElement;
+let borderRightColor: string_interpolated => styleElement;
 
-let borderBottomColor: string => styleElement;
+let borderBottomColor: string_interpolated => styleElement;
 
-let borderLeftColor: string => styleElement;
+let borderLeftColor: string_interpolated => styleElement;
 
 let borderRadius: float => styleElement;
 
@@ -288,14 +292,6 @@ type borderStyle =
 
 let borderStyle: borderStyle => styleElement;
 
-let borderTopStyle: borderStyle => styleElement;
-
-let borderRightStyle: borderStyle => styleElement;
-
-let borderBottomStyle: borderStyle => styleElement;
-
-let borderLeftStyle: borderStyle => styleElement;
-
 let borderBottomLeftRadius: float => styleElement;
 
 let borderBottomRightRadius: float => styleElement;
@@ -308,7 +304,7 @@ let elevation: float => styleElement;
 /***
  *  Text Props
  */
-let color: string => styleElement;
+let color: string_interpolated => styleElement;
 
 let fontFamily: string => styleElement;
 
@@ -355,7 +351,7 @@ type textDecorationLine =
 
 let textDecorationLine: textDecorationLine => styleElement;
 
-let textShadowColor: string => styleElement;
+let textShadowColor: string_interpolated => styleElement;
 
 let textShadowOffset: (~height: float, ~width: float) => styleElement;
 
@@ -375,7 +371,7 @@ let fontVariant: list(string) => styleElement;
 
 let letterSpacing: float => styleElement;
 
-let textDecorationColor: string => styleElement;
+let textDecorationColor: string_interpolated => styleElement;
 
 type textDecorationStyle =
   | Solid
@@ -401,9 +397,9 @@ type resizeMode =
 
 let resizeMode: resizeMode => styleElement;
 
-let tintColor: string => styleElement;
+let tintColor: string_interpolated => styleElement;
 
-let overlayColor: string => styleElement;
+let overlayColor: string_interpolated => styleElement;
 
 
 /***
@@ -484,3 +480,21 @@ type borderCollapse =
   | Separate;
 
 let borderCollapse: borderCollapse => styleElement;
+
+let borderTopStyle: borderStyle => styleElement;
+
+let borderRightStyle: borderStyle => styleElement;
+
+let borderBottomStyle: borderStyle => styleElement;
+
+let borderLeftStyle: borderStyle => styleElement;
+
+type userSelect =
+  | None
+  | Text
+  | Auto
+  | Inherit
+  | Initial
+  | Unset;
+
+let userSelect: userSelect => styleElement;

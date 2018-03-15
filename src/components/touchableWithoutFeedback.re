@@ -1,4 +1,5 @@
-[@bs.module "react-native"] external view : ReasonReact.reactClass = "TouchableWithoutFeedback";
+[@bs.module "react-native"]
+external view : ReasonReact.reactClass = "TouchableWithoutFeedback";
 
 let make =
     (
@@ -17,7 +18,7 @@ let make =
       ~onPressIn=?,
       ~onPressOut=?,
       ~pressRetentionOffset=?,
-      ~style=?
+      ~style=?,
     ) =>
   ReasonReact.wrapJsForReason(
     ~reactClass=view,
@@ -41,20 +42,20 @@ let make =
           "accessibilityComponentType":
             fromOption(
               UtilsRN.option_map(
-                (x) =>
-                  switch x {
+                x =>
+                  switch (x) {
                   | `none => "none"
                   | `button => "button"
                   | `radiobutton_checked => "radiobutton_checked-none"
                   | `radiobutton_unchecked => "radiobutton_unchecked"
                   },
-                accessibilityComponentType
-              )
+                accessibilityComponentType,
+              ),
             ),
           "accessibilityTraits":
             fromOption(
               UtilsRN.option_map(
-                (traits) => {
+                traits => {
                   let to_string =
                     fun
                     | `none => "none"
@@ -74,11 +75,11 @@ let make =
                     | `adjustable => "adjustable"
                     | `allowsDirectInteraction => "allowsDirectInteraction"
                     | `pageTurn => "pageTurn";
-                  traits |> List.map(to_string) |> Array.of_list
+                  traits |> List.map(to_string) |> Array.of_list;
                 },
-                accessibilityTraits
-              )
-            )
+                accessibilityTraits,
+              ),
+            ),
         }
-      )
+      ),
   );

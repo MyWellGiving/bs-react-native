@@ -12,7 +12,7 @@ type mode =
 type response = {
   year: int,
   month: int,
-  day: int
+  day: int,
 };
 
 type action =
@@ -26,7 +26,7 @@ let action = resp =>
     Dismissed;
   } else {
     failwith(
-      "Unknown action received from DatePickerAndroid. Please report this in the bs-react-native repository"
+      "Unknown action received from DatePickerAndroid. Please report this in the bs-react-native repository",
     );
   };
 
@@ -35,7 +35,7 @@ type responseJs = {
   "action": string,
   "year": int,
   "month": int,
-  "day": int
+  "day": int,
 };
 
 type optsJs = {
@@ -43,7 +43,7 @@ type optsJs = {
   "date": Js.Date.t,
   "minDate": Js.Nullable.t(Js.Date.t),
   "maxDate": Js.Nullable.t(Js.Date.t),
-  "mode": string
+  "mode": string,
 };
 
 [@bs.scope "DatePickerAndroid"] [@bs.module "react-native"]
@@ -52,14 +52,14 @@ external _open : optsJs => Js.Promise.t(responseJs) = "open";
 let open_ = (~date: Js.Date.t, ~minDate=?, ~maxDate=?, ~mode=Default, ()) =>
   _open({
     "date": date,
-    "minDate": Js.Nullable.from_opt(minDate),
-    "maxDate": Js.Nullable.from_opt(maxDate),
+    "minDate": Js.Nullable.fromOption(minDate),
+    "maxDate": Js.Nullable.fromOption(maxDate),
     "mode":
-      switch mode {
+      switch (mode) {
       | Default => "default"
       | Calendar => "calendar"
       | Spinner => "spinner"
-      }
+      },
   })
   |> Js.Promise.then_((resp: responseJs) =>
        resp |> action |> Js.Promise.resolve

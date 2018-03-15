@@ -1,18 +1,5 @@
-type touchResponderHandlers = {
-  onMoveShouldSetResponder: option((RNEvent.NativeEvent.t => bool)),
-  onMoveShouldSetResponderCapture: option((RNEvent.NativeEvent.t => bool)),
-  onResponderGrant: option((RNEvent.NativeEvent.t => unit)),
-  onResponderMove: option((RNEvent.NativeEvent.t => unit)),
-  onResponderReject: option((RNEvent.NativeEvent.t => unit)),
-  onResponderRelease: option((RNEvent.NativeEvent.t => unit)),
-  onResponderTerminate: option((RNEvent.NativeEvent.t => unit)),
-  onResponderTerminationRequest: option((RNEvent.NativeEvent.t => unit)),
-  onStartShouldSetResponder: option((RNEvent.NativeEvent.t => bool)),
-  onStartShouldSetResponderCapture: option((RNEvent.NativeEvent.t => bool))
-};
-
-let serialize = (handlers: option(touchResponderHandlers)) =>
-  switch handlers {
+let serialize = (handlers: option(Types.touchResponderHandlers)) =>
+  switch (handlers) {
   | None => Js.Obj.empty()
   | Some(handlers) =>
     Js.Undefined.(
@@ -21,36 +8,37 @@ let serialize = (handlers: option(touchResponderHandlers)) =>
           fromOption(
             UtilsRN.option_map(
               (g, x) => Js.Boolean.to_js_boolean(g(x)),
-              handlers.onMoveShouldSetResponder
-            )
+              handlers.onMoveShouldSetResponder,
+            ),
           ),
         "onMoveShouldSetResponderCapture":
           fromOption(
             UtilsRN.option_map(
               (g, x) => Js.Boolean.to_js_boolean(g(x)),
-              handlers.onMoveShouldSetResponderCapture
-            )
+              handlers.onMoveShouldSetResponderCapture,
+            ),
           ),
         "onResponderGrant": fromOption(handlers.onResponderGrant),
         "onResponderMove": fromOption(handlers.onResponderMove),
         "onResponderReject": fromOption(handlers.onResponderReject),
         "onResponderRelease": fromOption(handlers.onResponderRelease),
         "onResponderTerminate": fromOption(handlers.onResponderTerminate),
-        "onResponderTerminationRequest": fromOption(handlers.onResponderTerminationRequest),
+        "onResponderTerminationRequest":
+          fromOption(handlers.onResponderTerminationRequest),
         "onStartShouldSetResponder":
           fromOption(
             UtilsRN.option_map(
               (g, x) => Js.Boolean.to_js_boolean(g(x)),
-              handlers.onStartShouldSetResponder
-            )
+              handlers.onStartShouldSetResponder,
+            ),
           ),
         "onStartShouldSetResponderCapture":
           fromOption(
             UtilsRN.option_map(
               (g, x) => Js.Boolean.to_js_boolean(g(x)),
-              handlers.onStartShouldSetResponderCapture
-            )
-          )
+              handlers.onStartShouldSetResponderCapture,
+            ),
+          ),
       }
     )
   };
@@ -77,7 +65,7 @@ let extendView =
       ~accessibilityTraits=?,
       ~accessibilityViewIsModal=?,
       ~shouldRasterizeIOS=?,
-      moreProps
+      moreProps,
     ) =>
   UtilsRN.objAssign2(
     Js.Undefined.(
@@ -88,69 +76,75 @@ let extendView =
         "onAccessibilityTap": fromOption(onAccessibilityTap),
         "onLayout": fromOption(onLayout),
         "onMagicTap": fromOption(onMagicTap),
-        "removeClippedSubviews": fromOption(UtilsRN.optBoolToOptJsBoolean(removeClippedSubviews)),
+        "removeClippedSubviews":
+          fromOption(UtilsRN.optBoolToOptJsBoolean(removeClippedSubviews)),
         "pointerEvents":
           fromOption(
             UtilsRN.option_map(
-              (x) =>
-                switch x {
+              x =>
+                switch (x) {
                 | `auto => "auto"
                 | `none => "none"
                 | `boxNone => "box-none"
                 | `boxOnly => "box-only"
                 },
-              pointerEvents
-            )
+              pointerEvents,
+            ),
           ),
         "style": fromOption(style),
         "testID": fromOption(testID),
         "accessibilityComponentType":
           fromOption(
             UtilsRN.option_map(
-              (x) =>
-                switch x {
+              x =>
+                switch (x) {
                 | `none => "none"
                 | `button => "button"
                 | `radiobutton_checked => "radiobutton_checked-none"
                 | `radiobutton_unchecked => "radiobutton_unchecked"
                 },
-              accessibilityComponentType
-            )
+              accessibilityComponentType,
+            ),
           ),
         "accessibilityLiveRegion":
           fromOption(
             UtilsRN.option_map(
-              (x) =>
-                switch x {
+              x =>
+                switch (x) {
                 | `polite => "polite"
                 | `none => "none"
                 | `assertive => "assertive"
                 },
-              accessibilityLiveRegion
-            )
+              accessibilityLiveRegion,
+            ),
           ),
-        "collapsable": fromOption(UtilsRN.optBoolToOptJsBoolean(collapsable)),
+        "collapsable":
+          fromOption(UtilsRN.optBoolToOptJsBoolean(collapsable)),
         "importantForAccessibility":
           fromOption(
             UtilsRN.option_map(
-              (prop) =>
-                switch prop {
+              prop =>
+                switch (prop) {
                 | `auto => "auto"
                 | `yes => "yes"
                 | `no => "no"
                 | `noHideDescendants => "noHideDescendants"
                 },
-              importantForAccessibility
-            )
+              importantForAccessibility,
+            ),
           ),
         "needsOffscreenAlphaCompositing":
-          fromOption(UtilsRN.optBoolToOptJsBoolean(needsOffscreenAlphaCompositing)),
+          fromOption(
+            UtilsRN.optBoolToOptJsBoolean(needsOffscreenAlphaCompositing),
+          ),
         "renderToHardwareTextureAndroid":
-          fromOption(UtilsRN.optBoolToOptJsBoolean(renderToHardwareTextureAndroid)),
+          fromOption(
+            UtilsRN.optBoolToOptJsBoolean(renderToHardwareTextureAndroid),
+          ),
         "accessibilityTraits":
           fromOption(
             UtilsRN.option_map(
-              (traits) => {
+              traits => {
                 let to_string =
                   fun
                   | `none => "none"
@@ -170,16 +164,19 @@ let extendView =
                   | `adjustable => "adjustable"
                   | `allowsDirectInteraction => "allowsDirectInteraction"
                   | `pageTurn => "pageTurn";
-                traits |> List.map(to_string) |> Array.of_list
+                traits |> List.map(to_string) |> Array.of_list;
               },
-              accessibilityTraits
-            )
+              accessibilityTraits,
+            ),
           ),
         "accessibilityViewIsModal":
-          fromOption(UtilsRN.optBoolToOptJsBoolean(accessibilityViewIsModal)),
-        "shouldRasterizeIOS": fromOption(UtilsRN.optBoolToOptJsBoolean(shouldRasterizeIOS))
+          fromOption(
+            UtilsRN.optBoolToOptJsBoolean(accessibilityViewIsModal),
+          ),
+        "shouldRasterizeIOS":
+          fromOption(UtilsRN.optBoolToOptJsBoolean(shouldRasterizeIOS)),
       }
     ),
     moreProps,
-    serialize(responderHandlers)
+    serialize(responderHandlers),
   );

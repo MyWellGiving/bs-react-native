@@ -8,7 +8,7 @@ module type TextComponent = {
       ~onLayout: RNEvent.NativeLayoutEvent.t => unit=?,
       ~onLongPress: unit => unit=?,
       ~onPress: unit => unit=?,
-      ~pressRetentionOffset: TypesRN.insets=?,
+      ~pressRetentionOffset: Types.insets=?,
       ~selectable: bool=?,
       ~style: Style.t=?,
       ~testID: string=?,
@@ -20,7 +20,11 @@ module type TextComponent = {
       ~value: string=?,
       array(ReasonReact.reactElement)
     ) =>
-    ReasonReact.component(ReasonReact.stateless, ReasonReact.noRetainedProps, unit);
+    ReasonReact.component(
+      ReasonReact.stateless,
+      ReasonReact.noRetainedProps,
+      unit,
+    );
 };
 
 module CreateComponent = (Impl: View.Impl) : TextComponent => {
@@ -43,15 +47,17 @@ module CreateComponent = (Impl: View.Impl) : TextComponent => {
         ~minimumFontScale=?,
         ~suppressHighlighting=?,
         ~value=?,
-        children
+        children,
       ) =>
     ReasonReact.wrapJsForReason(
       ~reactClass=Impl.view,
       ~props=
         Js.Undefined.(
           {
-            "accessible": fromOption(UtilsRN.optBoolToOptJsBoolean(accessible)),
-            "allowFontScaling": fromOption(UtilsRN.optBoolToOptJsBoolean(allowFontScaling)),
+            "accessible":
+              fromOption(UtilsRN.optBoolToOptJsBoolean(accessible)),
+            "allowFontScaling":
+              fromOption(UtilsRN.optBoolToOptJsBoolean(allowFontScaling)),
             "ellipsizeMode":
               fromOption(
                 UtilsRN.option_map(
@@ -60,15 +66,16 @@ module CreateComponent = (Impl: View.Impl) : TextComponent => {
                   | `middle => "middle"
                   | `tail => "tail"
                   | `clip => "clip",
-                  ellipsizeMode
-                )
+                  ellipsizeMode,
+                ),
               ),
             "numberOfLines": fromOption(numberOfLines),
             "onLayout": fromOption(onLayout),
             "onLongPress": fromOption(onLongPress),
             "onPress": fromOption(onPress),
             "pressRetentionOffset": fromOption(pressRetentionOffset),
-            "selectable": fromOption(UtilsRN.optBoolToOptJsBoolean(selectable)),
+            "selectable":
+              fromOption(UtilsRN.optBoolToOptJsBoolean(selectable)),
             "style": fromOption(style),
             "testID": fromOption(testID),
             "selectionColor": fromOption(selectionColor),
@@ -79,24 +86,32 @@ module CreateComponent = (Impl: View.Impl) : TextComponent => {
                   | `simple => "simple"
                   | `highQuality => "highQuality"
                   | `balanced => "balanced",
-                  textBreakStrategy
-                )
+                  textBreakStrategy,
+                ),
               ),
-            "adjustsFontSizeToFit": fromOption(UtilsRN.optBoolToOptJsBoolean(adjustsFontSizeToFit)),
+            "adjustsFontSizeToFit":
+              fromOption(
+                UtilsRN.optBoolToOptJsBoolean(adjustsFontSizeToFit),
+              ),
             "minimumFontScale": fromOption(minimumFontScale),
-            "suppressHighlighting": fromOption(UtilsRN.optBoolToOptJsBoolean(suppressHighlighting))
+            "suppressHighlighting":
+              fromOption(
+                UtilsRN.optBoolToOptJsBoolean(suppressHighlighting),
+              ),
           }
         ),
-      switch value {
-      | Some(string) => Array.append([|ReasonReact.stringToElement(string)|], children)
+      switch (value) {
+      | Some(string) =>
+        Array.append([|ReasonReact.stringToElement(string)|], children)
       | None => children
-      }
+      },
     );
 };
 
 include
   CreateComponent(
     {
-      [@bs.module "react-native"] external view : ReasonReact.reactClass = "Text";
-    }
+      [@bs.module "react-native"]
+      external view : ReasonReact.reactClass = "Text";
+    },
   );

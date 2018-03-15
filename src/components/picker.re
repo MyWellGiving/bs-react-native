@@ -1,7 +1,8 @@
 [@bs.module "react-native"] external view : ReasonReact.reactClass = "Picker";
 
 module Item = {
-  [@bs.scope "Picker"] [@bs.module "react-native"] external item : ReasonReact.reactClass = "Item";
+  [@bs.scope "Picker"] [@bs.module "react-native"]
+  external item : ReasonReact.reactClass = "Item";
   let make = (~color=?, ~label=?, ~value=?, ~testID=?) =>
     ReasonReact.wrapJsForReason(
       ~reactClass=item,
@@ -11,14 +12,14 @@ module Item = {
             "label": fromOption(label),
             "value": fromOption(value),
             "color": fromOption(color),
-            "testID": fromOption(testID)
+            "testID": fromOption(testID),
           }
-        )
+        ),
     );
 };
 
-let encodeMode = (x) =>
-  switch x {
+let encodeMode = x =>
+  switch (x) {
   | `dialog => "dialog"
   | `dropdown => "dropdown"
   };
@@ -50,7 +51,7 @@ let make =
       ~renderToHardwareTextureAndroid=?,
       ~accessibilityTraits=?,
       ~accessibilityViewIsModal=?,
-      ~shouldRasterizeIOS=?
+      ~shouldRasterizeIOS=?,
     ) =>
   ReasonReact.wrapJsForReason(
     ~reactClass=view,
@@ -63,7 +64,7 @@ let make =
             "selectedValue": fromOption(selectedValue),
             "itemStyle": fromOption(itemStyle),
             "prompt": fromOption(prompt),
-            "mode": fromOption(UtilsRN.option_map(encodeMode, mode))
+            "mode": fromOption(UtilsRN.option_map(encodeMode, mode)),
           }
         ),
         ~accessibilityLabel?,
@@ -85,6 +86,6 @@ let make =
         ~renderToHardwareTextureAndroid?,
         ~accessibilityTraits?,
         ~accessibilityViewIsModal?,
-        ~shouldRasterizeIOS?
-      )
+        ~shouldRasterizeIOS?,
+      ),
   );

@@ -4,8 +4,8 @@ type rawImageSourceJS;
 
 external rawImageSourceJS : 'a => rawImageSourceJS = "%identity";
 
-let convertImageSource = (src) =>
-  switch src {
+let convertImageSource = src =>
+  switch (src) {
   | Image.Multiple(x) => rawImageSourceJS(Array.of_list(x))
   | Image.URI(x) => rawImageSourceJS(x)
   | Image.Required(x) => rawImageSourceJS(x)
@@ -18,8 +18,8 @@ let make =
       ~maximumValue: option(float)=?,
       ~minimumTrackTintColor: option(string)=?,
       ~minimumValue: option(float)=?,
-      ~onSlidingComplete: option((float => unit))=?,
-      ~onValueChange: option((float => unit))=?,
+      ~onSlidingComplete: option(float => unit)=?,
+      ~onValueChange: option(float => unit)=?,
       ~step: option(float)=?,
       ~value: option(float)=?,
       ~thumbTintColor: option(string)=?,
@@ -46,7 +46,7 @@ let make =
       ~renderToHardwareTextureAndroid=?,
       ~accessibilityTraits=?,
       ~accessibilityViewIsModal=?,
-      ~shouldRasterizeIOS=?
+      ~shouldRasterizeIOS=?,
     ) =>
   ReasonReact.wrapJsForReason(
     ~reactClass=view,
@@ -65,11 +65,17 @@ let make =
             "value": fromOption(value),
             "thumbTintColor": fromOption(thumbTintColor),
             "maximumTrackImage":
-              fromOption(UtilsRN.option_map(convertImageSource, maximumTrackImage)),
+              fromOption(
+                UtilsRN.option_map(convertImageSource, maximumTrackImage),
+              ),
             "minimumTrackImage":
-              fromOption(UtilsRN.option_map(convertImageSource, minimumTrackImage)),
-            "thumbImage": fromOption(UtilsRN.option_map(convertImageSource, thumbImage)),
-            "trackImage": fromOption(UtilsRN.option_map(convertImageSource, trackImage))
+              fromOption(
+                UtilsRN.option_map(convertImageSource, minimumTrackImage),
+              ),
+            "thumbImage":
+              fromOption(UtilsRN.option_map(convertImageSource, thumbImage)),
+            "trackImage":
+              fromOption(UtilsRN.option_map(convertImageSource, trackImage)),
           }
         ),
         ~accessibilityLabel?,
@@ -91,6 +97,6 @@ let make =
         ~renderToHardwareTextureAndroid?,
         ~accessibilityTraits?,
         ~accessibilityViewIsModal?,
-        ~shouldRasterizeIOS?
-      )
+        ~shouldRasterizeIOS?,
+      ),
   );

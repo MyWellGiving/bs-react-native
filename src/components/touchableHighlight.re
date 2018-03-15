@@ -1,4 +1,5 @@
-[@bs.module "react-native"] external view : ReasonReact.reactClass = "TouchableHighlight";
+[@bs.module "react-native"]
+external view : ReasonReact.reactClass = "TouchableHighlight";
 
 let make =
     (
@@ -22,7 +23,7 @@ let make =
       ~style=?,
       ~underlayColor=?,
       ~hasTVPreferredFocus=?,
-      ~tvParallaxProperties=?
+      ~tvParallaxProperties=?,
     ) =>
   ReasonReact.wrapJsForReason(
     ~reactClass=view,
@@ -44,20 +45,20 @@ let make =
           "accessibilityComponentType":
             fromOption(
               UtilsRN.option_map(
-                (x) =>
-                  switch x {
+                x =>
+                  switch (x) {
                   | `none => "none"
                   | `button => "button"
                   | `radiobutton_checked => "radiobutton_checked-none"
                   | `radiobutton_unchecked => "radiobutton_unchecked"
                   },
-                accessibilityComponentType
-              )
+                accessibilityComponentType,
+              ),
             ),
           "accessibilityTraits":
             fromOption(
               UtilsRN.option_map(
-                (traits) => {
+                traits => {
                   let to_string =
                     fun
                     | `none => "none"
@@ -77,18 +78,19 @@ let make =
                     | `adjustable => "adjustable"
                     | `allowsDirectInteraction => "allowsDirectInteraction"
                     | `pageTurn => "pageTurn";
-                  traits |> List.map(to_string) |> Array.of_list
+                  traits |> List.map(to_string) |> Array.of_list;
                 },
-                accessibilityTraits
-              )
+                accessibilityTraits,
+              ),
             ),
           "activeOpacity": fromOption(activeOpacity),
           "onHideUnderlay": fromOption(onHideUnderlay),
           "onShowUnderlay": fromOption(onShowUnderlay),
           "style": fromOption(style),
           "underlayColor": fromOption(underlayColor),
-          "hasTVPreferredFocus": fromOption(UtilsRN.optBoolToOptJsBoolean(hasTVPreferredFocus)),
-          "tvParallaxProperties": fromOption(tvParallaxProperties)
+          "hasTVPreferredFocus":
+            fromOption(UtilsRN.optBoolToOptJsBoolean(hasTVPreferredFocus)),
+          "tvParallaxProperties": fromOption(tvParallaxProperties),
         }
-      )
+      ),
   );
