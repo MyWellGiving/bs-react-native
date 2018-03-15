@@ -547,32 +547,15 @@ type borderStyle =
   | Dotted
   | Dashed;
 
-let string_of_borderStyle =
-  fun
-  | Solid => "solid"
-  | Dotted => "dotted"
-  | Dashed => "dashed";
-
-let getPlatformBorderStyle = (style, v) => {
-  let propertyName =
-    switch (Platform.os()) {
-    | exception (Platform.UnknownPlatform(p)) =>
-      p === "web" ? style : "borderStyle"
-    | IOS(_)
-    | Android => "borderStyle"
-    };
-  stringStyle(propertyName, v |> string_of_borderStyle);
-};
-
-let borderStyle = v => stringStyle("borderStyle", v |> string_of_borderStyle);
-
-let borderTopStyle = getPlatformBorderStyle("borderTopStyle");
-
-let borderRightStyle = getPlatformBorderStyle("borderRightStyle");
-
-let borderBottomStyle = getPlatformBorderStyle("borderBottomStyle");
-
-let borderLeftStyle = getPlatformBorderStyle("borderLeftStyle");
+let borderStyle = v =>
+  stringStyle(
+    "borderStyle",
+    switch (v) {
+    | Solid => "solid"
+    | Dotted => "dotted"
+    | Dashed => "dashed"
+    },
+  );
 
 let opacity = value => (
   "opacity",
@@ -772,10 +755,32 @@ let overlayColor = value => (
   encode_string_interpolated(value),
 );
 
+let getPlatformBorderStyle = (style, v: borderStyle) => {
+  let propertyName =
+    switch (Platform.os()) {
+    | exception (Platform.UnknownPlatform(p)) =>
+      p === "web" ? style : "borderStyle"
+    | IOS(_)
+    | Android => "borderStyle"
+    };
+  stringStyle(
+    propertyName,
+    switch (v) {
+    | Solid => "solid"
+    | Dotted => "dotted"
+    | Dashed => "dashed"
+    },
+  );
+};
 
-/***
- *  Web Props
- */
+let borderTopStyle = getPlatformBorderStyle("borderTopStyle");
+
+let borderRightStyle = getPlatformBorderStyle("borderRightStyle");
+
+let borderBottomStyle = getPlatformBorderStyle("borderBottomStyle");
+
+let borderLeftStyle = getPlatformBorderStyle("borderLeftStyle");
+
 type listStyleType =
   | Disc
   | Circle

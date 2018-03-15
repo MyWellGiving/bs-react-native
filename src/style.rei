@@ -292,14 +292,6 @@ type borderStyle =
 
 let borderStyle: borderStyle => styleElement;
 
-let borderTopStyle: borderStyle => styleElement;
-
-let borderRightStyle: borderStyle => styleElement;
-
-let borderBottomStyle: borderStyle => styleElement;
-
-let borderLeftStyle: borderStyle => styleElement;
-
 let borderBottomLeftRadius: float => styleElement;
 
 let borderBottomRightRadius: float => styleElement;
@@ -488,3 +480,11 @@ type borderCollapse =
   | Separate;
 
 let borderCollapse: borderCollapse => styleElement;
+
+let borderTopStyle: borderStyle => styleElement;
+
+let borderRightStyle: borderStyle => styleElement;
+
+let borderBottomStyle: borderStyle => styleElement;
+
+let borderLeftStyle: borderStyle => styleElement;
