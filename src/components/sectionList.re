@@ -1,5 +1,5 @@
 [@bs.module "react-native"]
-external view : ReasonReact.reactClass = "SectionList";
+external view: ReasonReact.reactClass = "SectionList";
 
 type jsSection('item) = {
   .
@@ -22,7 +22,7 @@ and jsRenderBag('item) = {
 
 type jsSeparatorProps('item) = {
   .
-  "highlighted": Js.boolean,
+  "highlighted": bool,
   "leadingItem": Js.Undefined.t('item),
   "leadingSection": Js.Undefined.t(jsSection('item)),
   "section": jsSection('item),
@@ -79,7 +79,7 @@ let renderItem =
 
 let section = (~data, ~key=?, ~renderItem=?, ()) => {data, key, renderItem};
 
-let sections = reSections : sections('item) =>
+let sections = reSections: sections('item) =>
   Array.map(
     reSection => {
       "data": reSection.data,
@@ -100,7 +100,7 @@ let separatorComponent =
     : separatorComponent('item) =>
   (jsSeparatorProps: jsSeparatorProps('item)) =>
     reSeparatorComponent({
-      highlighted: Js.to_bool(jsSeparatorProps##highlighted),
+      highlighted: jsSeparatorProps##highlighted,
       leadingItem: Js.Undefined.toOption(jsSeparatorProps##leadingItem),
       leadingSection:
         Js.Undefined.toOption(jsSeparatorProps##leadingSection)
@@ -117,7 +117,7 @@ type viewToken('item) = {
   "item": 'item,
   "key": string,
   "index": Js.undefined(int),
-  "isViewable": Js.boolean,
+  "isViewable": bool,
   "section": section('item),
 };
 
@@ -136,6 +136,12 @@ let renderAccessoryView =
       section: jsSectionToSection(jsRenderAccessory##section),
     });
 
+[@bs.deriving jsConverter]
+type keyboardDismissMode = [ | `none | `interactive | `onDrag];
+
+[@bs.deriving jsConverter]
+type keyboardShouldPersistTaps = [ | `always | `never | `handled];
+
 let make:
   (
     ~sections: sections('item),
@@ -146,6 +152,7 @@ let make:
     ~listFooterComponent: ReasonReact.reactElement=?,
     ~listHeaderComponent: ReasonReact.reactElement=?,
     ~sectionSeparatorComponent: separatorComponent('item)=?,
+    ~inverted: bool=?,
     ~extraData: 'extraData=?,
     ~initialNumToRender: int=?,
     ~onEndReached: {. "distanceFromEnd": float} => unit=?,
@@ -161,6 +168,18 @@ let make:
     ~renderSectionHeader: renderAccessoryView('item)=?,
     ~renderSectionFooter: renderAccessoryView('item)=?,
     ~stickySectionHeadersEnabled: bool=?,
+    ~keyboardDismissMode: keyboardDismissMode=?,
+    ~keyboardShouldPersistTaps: keyboardShouldPersistTaps=?,
+    ~showsHorizontalScrollIndicator: bool=?,
+    ~showsVerticalScrollIndicator: bool=?,
+    ~getItemLayout: (option(array('item)), int) =>
+                    {
+                      .
+                      "length": int,
+                      "offset": int,
+                      "index": int,
+                    }
+                      =?,
     array(ReasonReact.reactElement)
   ) =>
   ReasonReact.component(
@@ -177,6 +196,7 @@ let make:
     ~listFooterComponent=?,
     ~listHeaderComponent=?,
     ~sectionSeparatorComponent=?,
+    ~inverted=?,
     ~extraData=?,
     ~initialNumToRender=?,
     ~onEndReached=?,
@@ -187,37 +207,47 @@ let make:
     ~renderSectionHeader=?,
     ~renderSectionFooter=?,
     ~stickySectionHeadersEnabled=?,
+    ~keyboardDismissMode=?,
+    ~keyboardShouldPersistTaps=?,
+    ~showsHorizontalScrollIndicator=?,
+    ~showsVerticalScrollIndicator=?,
+    ~getItemLayout=?,
     _children,
   ) =>
     ReasonReact.wrapJsForReason(
       ~reactClass=view,
-      ~props=
-        Js.Undefined.(
-          {
-            "sections": sections,
-            "renderItem": renderItem,
-            "keyExtractor": keyExtractor,
-            "ItemSeparatorComponent": fromOption(itemSeparatorComponent),
-            "ListEmptyComponent": fromOption(listEmptyComponent),
-            "ListFooterComponent": fromOption(listFooterComponent),
-            "ListHeaderComponent": fromOption(listHeaderComponent),
-            "SectionSeparatorComponent":
-              fromOption(sectionSeparatorComponent),
-            "extraData": fromOption(extraData),
-            "initialNumToRender": fromOption(initialNumToRender),
-            "onEndReached": fromOption(onEndReached),
-            "onEndReachedThreshold": fromOption(onEndReachedThreshold),
-            "onRefresh": fromOption(onRefresh),
-            "onViewableItemsChanged": fromOption(onViewableItemsChanged),
-            "refreshing":
-              fromOption(UtilsRN.optBoolToOptJsBoolean(refreshing)),
-            "renderSectionHeader": fromOption(renderSectionHeader),
-            "renderSectionFooter": fromOption(renderSectionFooter),
-            "stickySectionHeadersEnabled":
-              fromOption(
-                UtilsRN.optBoolToOptJsBoolean(stickySectionHeadersEnabled),
-              ),
-          }
-        ),
+      ~props={
+        "sections": sections,
+        "renderItem": renderItem,
+        "keyExtractor": keyExtractor,
+        "ItemSeparatorComponent": itemSeparatorComponent,
+        "ListEmptyComponent": listEmptyComponent,
+        "ListFooterComponent": listFooterComponent,
+        "ListHeaderComponent": listHeaderComponent,
+        "SectionSeparatorComponent": sectionSeparatorComponent,
+        "inverted": inverted,
+        "extraData": extraData,
+        "initialNumToRender": initialNumToRender,
+        "onEndReached": onEndReached,
+        "onEndReachedThreshold": onEndReachedThreshold,
+        "onRefresh": onRefresh,
+        "onViewableItemsChanged": onViewableItemsChanged,
+        "refreshing": refreshing,
+        "renderSectionHeader": renderSectionHeader,
+        "renderSectionFooter": renderSectionFooter,
+        "stickySectionHeadersEnabled": stickySectionHeadersEnabled,
+        "keyboardDismissMode":
+          keyboardDismissMode |> UtilsRN.option_map(keyboardDismissModeToJs),
+        "keyboardShouldPersistTaps":
+          keyboardShouldPersistTaps
+          |> UtilsRN.option_map(keyboardShouldPersistTapsToJs),
+        "showsHorizontalScrollIndicator": showsHorizontalScrollIndicator,
+        "showsVerticalScrollIndicator": showsVerticalScrollIndicator,
+        "getItemLayout":
+          UtilsRN.option_map(
+            (f, data, index) => f(Js.Undefined.toOption(data), index),
+            getItemLayout,
+          ),
+      },
       _children,
     );

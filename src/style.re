@@ -2,6 +2,9 @@ type t;
 
 type styleElement = (string, Js.Json.t);
 
+type pt_only =
+  | Pt(float);
+
 type pt_pct =
   | Pt(float)
   | Pct(float);
@@ -23,54 +26,50 @@ let encode_pt_pct_auto = value =>
   | Auto => Encode.string("auto")
   };
 
-type pt_pct_animated_interpolated =
+type pt_pct_animated('a) =
   | Pt(float)
   | Pct(float)
-  | Animated(AnimatedRe.Value.t)
-  | Interpolated(AnimatedRe.Interpolation.t);
+  | Animated(AnimatedRe.value('a));
 
-let encode_pt_pct_animated_interpolated =
+let encode_pt_pct_animated =
   fun
   | Pt(value) => Encode.float(value)
   | Pct(value) => Encode.pct(value)
-  | Animated(value) => Encode.animatedValue(value)
-  | Interpolated(value) => Encode.interpolatedValue(value);
+  | Animated(value) => Encode.animatedValue(value);
 
-type float_interpolated_animated =
+type float_animated('a) =
   | Float(float)
-  | Animated(AnimatedRe.Value.t)
-  | Interpolated(AnimatedRe.Interpolation.t);
+  | Animated(AnimatedRe.value('a));
 
-let encode_float_interpolated_animated =
+let encode_float_animated =
   fun
   | Float(value) => Encode.float(value)
-  | Animated(value) => Encode.animatedValue(value)
-  | Interpolated(value) => Encode.interpolatedValue(value);
+  | Animated(value) => Encode.animatedValue(value);
 
 type string_interpolated =
   | String(string)
-  | Interpolated(AnimatedRe.Interpolation.t);
+  | Animated(AnimatedRe.Interpolation.t);
 
 let encode_string_interpolated =
   fun
   | String(value) => Encode.string(value)
-  | Interpolated(value) => Encode.interpolatedValue(value);
+  | Animated(value) => Encode.animatedValue(value);
 
-external flatten : array(t) => t = "%identity";
+external flatten: array(t) => t = "%identity";
 
-external to_style : Js.Dict.t(Js.Json.t) => t = "%identity";
+external to_style: Js.Dict.t(Js.Json.t) => t = "%identity";
 
-external style_to_dict : t => Js.Dict.t(Js.Json.t) = "%identity";
+external style_to_dict: t => Js.Dict.t(Js.Json.t) = "%identity";
 
-external array_to_style : array(t) => t = "%identity";
+external array_to_style: array(t) => t = "%identity";
 
 let combine = (a, b) => {
   let entries =
     Array.append(
-      UtilsRN.dictEntries(style_to_dict(a)),
-      UtilsRN.dictEntries(style_to_dict(b)),
+      Js.Dict.entries(style_to_dict(a)),
+      Js.Dict.entries(style_to_dict(b)),
     );
-  UtilsRN.dictFromArray(entries) |> to_style;
+  Js.Dict.fromArray(entries) |> to_style;
 };
 
 let concat = styles => array_to_style(Array.of_list(styles));
@@ -83,8 +82,7 @@ let objectStyle = (key, value) => (key, Encode.object_(value));
 
 let arrayStyle = (key, value) => (key, Encode.array(value));
 
-let style = sarr => sarr |> UtilsRN.dictFromList |> to_style;
-
+let style = sarr => sarr |> Js.Dict.fromList |> to_style;
 
 /***
  * Layout Props
@@ -299,17 +297,17 @@ let position = v =>
     },
   );
 
-let top = value => ("top", encode_pt_pct_animated_interpolated(value));
+let top = value => ("top", encode_pt_pct_animated(value));
 
-let left = value => ("left", encode_pt_pct_animated_interpolated(value));
+let left = value => ("left", encode_pt_pct_animated(value));
 
-let right = value => ("right", encode_pt_pct_animated_interpolated(value));
+let right = value => ("right", encode_pt_pct_animated(value));
 
-let bottom = value => ("bottom", encode_pt_pct_animated_interpolated(value));
+let bottom = value => ("bottom", encode_pt_pct_animated(value));
 
-let height = value => ("height", encode_pt_pct_animated_interpolated(value));
+let height = value => ("height", encode_pt_pct_animated(value));
 
-let width = value => ("width", encode_pt_pct_animated_interpolated(value));
+let width = value => ("width", encode_pt_pct_animated(value));
 
 let zIndex = value => ("zIndex", Encode.int(value));
 
@@ -328,7 +326,6 @@ let direction = v =>
     },
   );
 
-
 /***
  * Shadow Props
  */
@@ -338,7 +335,7 @@ let shadowColor = value => (
 );
 
 let shadowOffset = (~height, ~width) =>
-  UtilsRN.dictFromArray([|
+  Js.Dict.fromArray([|
     ("height", Encode.float(height)),
     ("width", Encode.float(width)),
   |])
@@ -375,16 +372,15 @@ module Transform = {
       ("scaleY", encoder(. scaleY)),
       ("translateX", encoder(. translateX)),
       ("translateY", encoder(. translateY)),
-      ("skewX", encoder(. skewX)),
-      ("skewY", encoder(. skewY)),
+      ("skewX", rotationEncoder(. skewX)),
+      ("skewY", rotationEncoder(. skewY)),
     |];
     let values =
       Array.fold_right(
         (x, acc) =>
           switch (x) {
           | (key, Some(value)) =>
-            let val_ =
-              UtilsRN.dictFromArray([|(key, value)|]) |> Encode.object_;
+            let val_ = Js.Dict.fromArray([|(key, value)|]) |> Encode.object_;
             [val_, ...acc];
           | _ => acc
           },
@@ -453,38 +449,7 @@ module Transform = {
       skewX,
       skewY,
     );
-  let makeInterpolated =
-      (
-        ~perspective=?,
-        ~rotate=?,
-        ~rotateX=?,
-        ~rotateY=?,
-        ~rotateZ=?,
-        ~scaleX=?,
-        ~scaleY=?,
-        ~translateX=?,
-        ~translateY=?,
-        ~skewX=?,
-        ~skewY=?,
-        (),
-      ) =>
-    create_(
-      (. value) => UtilsRN.option_map(Encode.interpolatedValue, value),
-      (. value) => UtilsRN.option_map(Encode.interpolatedValue, value),
-      perspective,
-      rotate,
-      rotateX,
-      rotateY,
-      rotateZ,
-      scaleX,
-      scaleY,
-      translateX,
-      translateY,
-      skewX,
-      skewY,
-    );
 };
-
 
 /***
  * View Props
@@ -557,13 +522,9 @@ let borderStyle = v =>
     },
   );
 
-let opacity = value => (
-  "opacity",
-  encode_float_interpolated_animated(value),
-);
+let opacity = value => ("opacity", encode_float_animated(value));
 
 let elevation = floatStyle("elevation");
-
 
 /***
  * Text Props
@@ -572,10 +533,7 @@ let color = value => ("color", encode_string_interpolated(value));
 
 let fontFamily = stringStyle("fontFamily");
 
-let fontSize = value => (
-  "fontSize",
-  encode_float_interpolated_animated(value),
-);
+let fontSize = value => ("fontSize", encode_float_animated(value));
 
 type fontStyle =
   | Normal
@@ -652,7 +610,7 @@ let textShadowColor = value => (
 );
 
 let textShadowOffset = (~height, ~width) =>
-  UtilsRN.dictFromArray([|
+  Js.Dict.fromArray([|
     ("height", Encode.float(height)),
     ("width", Encode.float(width)),
   |])
@@ -662,7 +620,7 @@ let textShadowRadius = floatStyle("textShadowRadius");
 
 let includeFontPadding = value => (
   "includeFontPadding",
-  Encode.boolean(Js.Boolean.to_js_boolean(value)),
+  Encode.boolean(value),
 );
 
 type textAlignVertical =
@@ -734,7 +692,6 @@ type resizeMode =
   | Repeat
   | Center;
 
-
 /*** Image props */
 let resizeMode = v =>
   stringStyle(
@@ -755,202 +712,5 @@ let overlayColor = value => (
   encode_string_interpolated(value),
 );
 
-let getPlatformBorderStyle = (style, v: borderStyle) => {
-  let propertyName =
-    switch (Platform.os()) {
-    | exception (Platform.UnknownPlatform(p)) =>
-      p === "web" ? style : "borderStyle"
-    | IOS(_)
-    | Android => "borderStyle"
-    };
-  stringStyle(
-    propertyName,
-    switch (v) {
-    | Solid => "solid"
-    | Dotted => "dotted"
-    | Dashed => "dashed"
-    },
-  );
-};
-
-let borderTopStyle = getPlatformBorderStyle("borderTopStyle");
-
-let borderRightStyle = getPlatformBorderStyle("borderRightStyle");
-
-let borderBottomStyle = getPlatformBorderStyle("borderBottomStyle");
-
-let borderLeftStyle = getPlatformBorderStyle("borderLeftStyle");
-
-type listStyleType =
-  | Disc
-  | Circle
-  | Square
-  | Decimal
-  | Georgian
-  | CJKIdeographic
-  | Kannada
-  | None
-  | Inherit
-  | Initial
-  | Unset
-  | Custom(string);
-
-let string_of_listStyleType =
-  fun
-  | Disc => "disc"
-  | Circle => "circle"
-  | Square => "square"
-  | Decimal => "decimal"
-  | Georgian => "georgian"
-  | CJKIdeographic => "cjk-ideographic"
-  | Kannada => "kannada"
-  | None => "none"
-  | Inherit => "inherit"
-  | Initial => "initial"
-  | Unset => "unset"
-  | Custom(string) => string;
-
-type listStylePosition =
-  | Inside
-  | Outside
-  | Inherit
-  | Initial
-  | Unset;
-
-let string_of_listStylePosition =
-  fun
-  | Inside => "inside"
-  | Outside => "outside"
-  | Inherit => "inherit"
-  | Initial => "initial"
-  | Unset => "unset";
-
-let listStyle =
-    (~type_: listStyleType, ~image: string="", ~position=Outside, ()) =>
-  stringStyle(
-    "listStyle",
-    (type_ |> string_of_listStyleType)
-    ++ (
-      switch (image) {
-      | "" => ""
-      | s => " " ++ s
-      }
-    )
-    ++ " "
-    ++ (position |> string_of_listStylePosition),
-  );
-
-type cursor =
-  | Auto
-  | Default
-  | None
-  | ContextMenu
-  | Help
-  | Pointer
-  | Progress
-  | Wait
-  | Cell
-  | Crosshair
-  | Text
-  | VerticalText
-  | Alias
-  | Copy
-  | Move
-  | NoDrop
-  | NotAllowed
-  | EResize
-  | NResize
-  | NEResize
-  | NWResize
-  | SResize
-  | SEResize
-  | SWResize
-  | WResize
-  | EWResize
-  | NSResize
-  | NESWResize
-  | NWSEResize
-  | ColResize
-  | RowResize
-  | AllScroll
-  | ZoomIn
-  | ZoomOut
-  | Grab
-  | Grabbing;
-
-let cursor = v =>
-  stringStyle(
-    "cursor",
-    switch (v) {
-    | Auto => "auto"
-    | Default => "default"
-    | None => "none"
-    | ContextMenu => "context-menu"
-    | Help => "help"
-    | Pointer => "pointer"
-    | Progress => "progress"
-    | Wait => "wait"
-    | Cell => "cell"
-    | Crosshair => "crosshair"
-    | Text => "text"
-    | VerticalText => "vertical-text"
-    | Alias => "alias"
-    | Copy => "copy"
-    | Move => "move"
-    | NoDrop => "no-drop"
-    | NotAllowed => "not-allowed"
-    | EResize => "e-resize"
-    | NResize => "n-resize"
-    | NEResize => "ne-resize"
-    | NWResize => "nw-resize"
-    | SResize => "s-resize"
-    | SEResize => "se-resize"
-    | SWResize => "sw-resize"
-    | WResize => "w-resize"
-    | EWResize => "ew-resize"
-    | NSResize => "ns-resize"
-    | NESWResize => "nesw-resize"
-    | NWSEResize => "nwse-resize"
-    | ColResize => "col-resize"
-    | RowResize => "row-resize"
-    | AllScroll => "all-scroll"
-    | ZoomIn => "zoom-in"
-    | ZoomOut => "zoom-out"
-    | Grab => "grab"
-    | Grabbing => "grabbing"
-    },
-  );
-
-type borderCollapse =
-  | Collapse
-  | Separate;
-
-let borderCollapse = v =>
-  stringStyle(
-    "borderCollapse",
-    switch (v) {
-    | Collapse => "collapse"
-    | Separate => "separate"
-    },
-  );
-
-type userSelect =
-  | None
-  | Text
-  | Auto
-  | Inherit
-  | Initial
-  | Unset;
-
-let userSelect = v =>
-  stringStyle(
-    "userSelect",
-    switch (v) {
-    | None => "none"
-    | Text => "text"
-    | Auto => "auto"
-    | Inherit => "inherit"
-    | Initial => "initial"
-    | Unset => "unset"
-    },
-  );
+type color =
+  | String(string);

@@ -1,17 +1,18 @@
 module Item = {
   [@bs.scope "TabBarIOS"] [@bs.module "react-native"]
-  external tabBarItemIOS : ReasonReact.reactClass = "Item";
+  external tabBarItemIOS: ReasonReact.reactClass = "Item";
   let make =
       (
-        ~title: option(string)=?,
-        ~badgeColor: option(string)=?,
+        ~selected=?,
         ~badge=?,
         ~icon=?,
         ~onPress=?,
-        ~renderAsOriginal=?,
+        ~renderAsOriginal=?,     
+        ~badgeColor: option(string)=?,
+        ~selectedIcon=?,   
         ~style=?,
-        ~selected=?,
-        ~selectedIcon=?,
+        ~systemIcon=?,
+        ~title: option(string)=?,
         ~isTVSelectable=?,
         ~accessibilityLabel=?,
         ~accessible=?,
@@ -33,27 +34,41 @@ module Item = {
         ~accessibilityViewIsModal=?,
         ~shouldRasterizeIOS=?,
       ) =>
+      
     ReasonReact.wrapJsForReason(
       ~reactClass=tabBarItemIOS,
       ~props=
         Props.extendView(
-          Js.Undefined.(
-            {
-              "badgeColor": fromOption(badgeColor),
-              "title": fromOption(title),
-              "badge": fromOption(badge),
-              "icon": fromOption(icon),
-              "onPress": fromOption(onPress),
-              "renderAsOriginal":
-                fromOption(UtilsRN.optBoolToOptJsBoolean(renderAsOriginal)),
-              "selected":
-                fromOption(UtilsRN.optBoolToOptJsBoolean(selected)),
-              "selectedIcon": fromOption(selectedIcon),
-              "style": fromOption(style),
-              "isTVSelectable":
-                fromOption(UtilsRN.optBoolToOptJsBoolean(isTVSelectable)),
-            }
-          ),
+          {
+            "selected": selected,
+            "badge": badge,
+            "icon": icon,
+            "onPress": onPress,
+            "renderAsOriginal": renderAsOriginal,
+            "badgeColor": badgeColor,
+            "selectedIcon": selectedIcon,
+            "style": style,
+            "systemIcon": UtilsRN.option_map(
+              x =>
+                switch (x) {                  
+                | `bookmarks => "fill"
+                | `contacts => "contacts"
+                | `downloads => "downloads"
+                | `favourites => "favourites"
+                | `featured => "featured"
+                | `history => "history"
+                | `more => "more"
+                | `mostRecent => "most-recent"
+                | `mostViewed => "most-viewed"
+                | `recents => "recents"
+                | `search => "search"
+                | `topRated => "top-rated"
+              },
+              systemIcon,
+            ),
+            "title": title,
+            "isTVSelectable": isTVSelectable,
+          },
           ~accessibilityLabel?,
           ~accessible?,
           ~hitSlop?,
@@ -79,13 +94,13 @@ module Item = {
 };
 
 [@bs.module "react-native"]
-external tabBarIOS : ReasonReact.reactClass = "TabBarIOS";
+external tabBarIOS: ReasonReact.reactClass = "TabBarIOS";
 
 let make =
     (
+      ~barStyle=?,
       ~barTintColor=?,
       ~itemPositioning=?,
-      ~style=?,
       ~tintColor=?,
       ~translucent=?,
       ~unselectedItemTintColor=?,
@@ -100,6 +115,7 @@ let make =
       ~pointerEvents=?,
       ~removeClippedSubviews=?,
       ~testID=?,
+      ~style=?,
       ~accessibilityComponentType=?,
       ~accessibilityLiveRegion=?,
       ~collapsable=?,
@@ -114,28 +130,31 @@ let make =
     ~reactClass=tabBarIOS,
     ~props=
       Props.extendView(
-        Js.Undefined.(
-          {
-            "barTintColor": fromOption(barTintColor),
-            "itemPositioning":
-              fromOption(
-                UtilsRN.option_map(
-                  x =>
-                    switch (x) {
-                    | `fill => "fill"
-                    | `center => "center"
-                    | `auto => "auto"
-                    },
-                  itemPositioning,
-                ),
-              ),
-            "tintColor": fromOption(tintColor),
-            "translucent":
-              fromOption(UtilsRN.optBoolToOptJsBoolean(translucent)),
-            "unselectedItemTintColor": fromOption(unselectedItemTintColor),
-            "unselectedTintColor": fromOption(unselectedTintColor),
-          }
-        ),
+        {
+          "barStyle": UtilsRN.option_map(
+              x =>
+                switch (x) {
+                | `default => "default"
+                | `black => "black"
+                },
+              barStyle,
+          ),
+          "barTintColor": barTintColor,
+          "itemPositioning":
+            UtilsRN.option_map(
+              x =>
+                switch (x) {
+                | `fill => "fill"
+                | `center => "center"
+                | `auto => "auto"
+                },
+              itemPositioning,
+            ),
+          "tintColor": tintColor,
+          "translucent": translucent,
+          "unselectedItemTintColor": unselectedItemTintColor,
+          "unselectedTintColor": unselectedTintColor,
+        },
         ~accessibilityLabel?,
         ~accessible?,
         ~hitSlop?,

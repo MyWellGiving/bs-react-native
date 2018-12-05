@@ -51,67 +51,47 @@ module CreateComponent = (Impl: View.Impl) : TextComponent => {
       ) =>
     ReasonReact.wrapJsForReason(
       ~reactClass=Impl.view,
-      ~props=
-        Js.Undefined.(
-          {
-            "accessible":
-              fromOption(UtilsRN.optBoolToOptJsBoolean(accessible)),
-            "allowFontScaling":
-              fromOption(UtilsRN.optBoolToOptJsBoolean(allowFontScaling)),
-            "ellipsizeMode":
-              fromOption(
-                UtilsRN.option_map(
-                  fun
-                  | `head => "head"
-                  | `middle => "middle"
-                  | `tail => "tail"
-                  | `clip => "clip",
-                  ellipsizeMode,
-                ),
-              ),
-            "numberOfLines": fromOption(numberOfLines),
-            "onLayout": fromOption(onLayout),
-            "onLongPress": fromOption(onLongPress),
-            "onPress": fromOption(onPress),
-            "pressRetentionOffset": fromOption(pressRetentionOffset),
-            "selectable":
-              fromOption(UtilsRN.optBoolToOptJsBoolean(selectable)),
-            "style": fromOption(style),
-            "testID": fromOption(testID),
-            "selectionColor": fromOption(selectionColor),
-            "textBreakStrategy":
-              fromOption(
-                UtilsRN.option_map(
-                  fun
-                  | `simple => "simple"
-                  | `highQuality => "highQuality"
-                  | `balanced => "balanced",
-                  textBreakStrategy,
-                ),
-              ),
-            "adjustsFontSizeToFit":
-              fromOption(
-                UtilsRN.optBoolToOptJsBoolean(adjustsFontSizeToFit),
-              ),
-            "minimumFontScale": fromOption(minimumFontScale),
-            "suppressHighlighting":
-              fromOption(
-                UtilsRN.optBoolToOptJsBoolean(suppressHighlighting),
-              ),
-          }
-        ),
+      ~props={
+        "accessible": accessible,
+        "allowFontScaling": allowFontScaling,
+        "ellipsizeMode":
+          UtilsRN.option_map(
+            fun
+            | `head => "head"
+            | `middle => "middle"
+            | `tail => "tail"
+            | `clip => "clip",
+            ellipsizeMode,
+          ),
+        "numberOfLines": numberOfLines,
+        "onLayout": onLayout,
+        "onLongPress": onLongPress,
+        "onPress": onPress,
+        "pressRetentionOffset": pressRetentionOffset,
+        "selectable": selectable,
+        "style": style,
+        "testID": testID,
+        "selectionColor": selectionColor,
+        "textBreakStrategy":
+          UtilsRN.option_map(
+            fun
+            | `simple => "simple"
+            | `highQuality => "highQuality"
+            | `balanced => "balanced",
+            textBreakStrategy,
+          ),
+        "adjustsFontSizeToFit": adjustsFontSizeToFit,
+        "minimumFontScale": minimumFontScale,
+        "suppressHighlighting": suppressHighlighting,
+      },
       switch (value) {
       | Some(string) =>
-        Array.append([|ReasonReact.stringToElement(string)|], children)
+        Array.append([|ReasonReact.string(string)|], children)
       | None => children
       },
     );
 };
 
-include
-  CreateComponent(
-    {
-      [@bs.module "react-native"]
-      external view : ReasonReact.reactClass = "Text";
-    },
-  );
+include CreateComponent({
+  [@bs.module "react-native"] external view: ReasonReact.reactClass = "Text";
+});

@@ -1,0 +1,40 @@
+/** Extras **/
+
+dt#type-calculated {
+  display: none;
+}
+
+#module-type-FlatListComponent,
+#module-type-ViewComponent,
+#module-type-Impl,
+#module-type-ImageComponent,
+#module-type-ScrollViewComponent,
+#module-CreateComponent, 
+#module-type-TextComponent,
+#type-renderBag,
+#type-t,
+#type-renderAccessory,
+#type-viewToken,
+#module-CreateComponent ~ article summary,
+#module-CreateComponent ~ div summary
+{
+  display: none;
+}
+
+#module-type-FlatListComponent, 
+#module-CreateComponent, 
+#module-CreateComponent ~ div > .include.spec details,
+#module-CreateComponent ~ article > .include.spec details {
+  overflow: hidden;
+}
+
+#module-CreateComponent ~ div dl,
+#module-CreateComponent ~ article dl {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.content > dl > dd {
+  padding: 0;
+  padding-top: 0.75em;
+}

@@ -29,7 +29,7 @@ external _alert :
     Js.Undefined.t(
       {
         .
-        "cancelable": Js.Undefined.t(Js.boolean),
+        "cancelable": Js.Undefined.t(bool),
         "onDismiss": Js.Undefined.t(unit => unit),
       },
     ),
@@ -66,8 +66,7 @@ let alert = (~title, ~message=?, ~buttons=?, ~options=?, ~type_=?, ()) => {
     fromOption(
       UtilsRN.option_map(
         ({cancelable, onDismiss}) => {
-          "cancelable":
-            fromOption(UtilsRN.optBoolToOptJsBoolean(cancelable)),
+          "cancelable": fromOption(cancelable),
           "onDismiss": fromOption(onDismiss),
         },
         options,
@@ -80,7 +79,7 @@ let alert = (~title, ~message=?, ~buttons=?, ~options=?, ~type_=?, ()) => {
           switch (x) {
           | `default => "default"
           | `plainText => "plain-text"
-          | `secureText => "sercure-text"
+          | `secureText => "secure-text"
           | `loginPassword => "login-password"
           },
         type_,

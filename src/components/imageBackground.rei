@@ -1,10 +1,17 @@
+
+
 module Event: {
   type error;
   type progress = {
     loaded: float,
-    total: float
+    total: float,
   };
 };
+
+/**
+  [ImageBackground] component has the same props as {{:\BsReactNative/Image-BsReactNative} [Image] component}
+  You can read more on ImageBackground component usage in official docs: {{:https://facebook.github.io/react-native/docs/images}}
+*/
 
 let make:
   (
@@ -28,4 +35,8 @@ let make:
     ~onProgress: Event.progress => unit=?,
     array(ReasonReact.reactElement)
   ) =>
-  ReasonReact.component(ReasonReact.stateless, ReasonReact.noRetainedProps, unit);
+  ReasonReact.component(
+    ReasonReact.stateless,
+    ReasonReact.noRetainedProps,
+    unit,
+  );

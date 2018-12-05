@@ -1,4 +1,4 @@
-[@bs.module "react-native"] external modal : ReasonReact.reactClass = "Modal";
+[@bs.module "react-native"] external modal: ReasonReact.reactClass = "Modal";
 
 let encodeAnimationType = x =>
   switch (x) {
@@ -7,14 +7,18 @@ let encodeAnimationType = x =>
   | `fade => "fade"
   };
 
-let encodeSupportedOrientations = x =>
-  switch (x) {
-  | `portrait => "portrait"
-  | `portraitUpsideDown => "portrait-upside-down"
-  | `landscape => "landscape"
-  | `landscapeLeft => "landscape-left"
-  | `landscapeRight => "landscape-right"
-  };
+let encodeSupportedOrientations = xs =>
+  Array.map(
+    x =>
+      switch (x) {
+      | `portrait => "portrait"
+      | `portraitUpsideDown => "portrait-upside-down"
+      | `landscape => "landscape"
+      | `landscapeLeft => "landscape-left"
+      | `landscapeRight => "landscape-right"
+      },
+    xs,
+  );
 
 let make =
     (
@@ -29,28 +33,18 @@ let make =
     ) =>
   ReasonReact.wrapJsForReason(
     ~reactClass=modal,
-    ~props=
-      Js.Undefined.(
-        {
-          "animationType":
-            fromOption(
-              UtilsRN.option_map(encodeAnimationType, animationType),
-            ),
-          "onShow": fromOption(onShow),
-          "transparent":
-            fromOption(UtilsRN.optBoolToOptJsBoolean(transparent)),
-          "visible": fromOption(UtilsRN.optBoolToOptJsBoolean(visible)),
-          "hardwareAccelerated":
-            fromOption(UtilsRN.optBoolToOptJsBoolean(hardwareAccelerated)),
-          "onRequestClose": fromOption(onRequestClose),
-          "onOrientationChange": fromOption(onOrientationChange),
-          "supportedOrientations":
-            fromOption(
-              UtilsRN.option_map(
-                encodeSupportedOrientations,
-                supportedOrientations,
-              ),
-            ),
-        }
-      ),
+    ~props={
+      "animationType": UtilsRN.option_map(encodeAnimationType, animationType),
+      "onShow": onShow,
+      "transparent": transparent,
+      "visible": visible,
+      "hardwareAccelerated": hardwareAccelerated,
+      "onRequestClose": onRequestClose,
+      "onOrientationChange": onOrientationChange,
+      "supportedOrientations":
+        UtilsRN.option_map(
+          encodeSupportedOrientations,
+          supportedOrientations,
+        ),
+    },
   );

@@ -5,7 +5,7 @@ type shareActionSheetConfig;
 type error;
 
 [@bs.obj]
-external makeActionSheetConfig :
+external makeActionSheetConfig:
   (
     ~options: array(string),
     ~cancelButtonIndex: int=?,
@@ -17,11 +17,14 @@ external makeActionSheetConfig :
   actionSheetConfig =
   "";
 
+type options =
+  | Message(string)
+  | URL(string);
+
 [@bs.obj]
-external makeShareActionSheetConfig :
+external makeShareActionSheetConfig:
   (
-    ~message: string=?,
-    ~url: string=?,
+    ~options: options,
     ~subject: string=?,
     ~excludedActivityTypes: array(string)=?
   ) =>
@@ -29,11 +32,11 @@ external makeShareActionSheetConfig :
   "";
 
 [@bs.module "react-native"] [@bs.scope "ActionSheetIOS"]
-external _showActionSheetWithOptions : (actionSheetConfig, int => unit) => unit =
+external _showActionSheetWithOptions: (actionSheetConfig, int => unit) => unit =
   "showActionSheetWithOptions";
 
 [@bs.module "react-native"] [@bs.scope "ActionSheetIOS"]
-external _showShareActionSheetWithOptions :
+external _showShareActionSheetWithOptions:
   (shareActionSheetConfig, error => unit, (bool, string) => unit) => unit =
   "showShareActionSheetWithOptions";
 
@@ -62,8 +65,7 @@ let showActionSheetWithOptions =
 
 let showShareActionSheetWithOptions =
     (
-      ~message=?,
-      ~url=?,
+      ~options,
       ~subject=?,
       ~excludedActivityTypes=?,
       failureCallback,
@@ -71,12 +73,7 @@ let showShareActionSheetWithOptions =
       (),
     ) =>
   _showShareActionSheetWithOptions(
-    makeShareActionSheetConfig(
-      ~message?,
-      ~url?,
-      ~subject?,
-      ~excludedActivityTypes?,
-    ),
+    makeShareActionSheetConfig(~options, ~subject?, ~excludedActivityTypes?),
     failureCallback,
     successCallback,
   );

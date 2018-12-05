@@ -104,29 +104,25 @@ module CreateComponent = (Impl: View.Impl) : ScrollViewComponent => {
     y: float,
   };
   [@bs.send]
-  external _scrollTo :
+  external _scrollTo:
     (
       ReasonReact.reactRef,
       {
         .
         "x": int,
         "y": int,
-        "animated": Js.boolean,
+        "animated": bool,
       }
     ) =>
     unit =
     "scrollTo";
   [@bs.send]
-  external _scrollToEnd :
-    (ReasonReact.reactRef, {. "animated": Js.boolean}) => unit =
+  external _scrollToEnd: (ReasonReact.reactRef, {. "animated": bool}) => unit =
     "scrollToEnd";
   let scrollTo = (ref, ~x, ~y, ~animated) =>
-    _scrollTo(
-      ref,
-      {"x": x, "y": y, "animated": Js.Boolean.to_js_boolean(animated)},
-    );
+    _scrollTo(ref, {"x": x, "y": y, "animated": animated});
   let scrollToEnd = (ref, ~animated) =>
-    _scrollToEnd(ref, {"animated": Js.Boolean.to_js_boolean(animated)});
+    _scrollToEnd(ref, {"animated": animated});
   let make =
       (
         ~accessibilityLabel=?,
@@ -187,147 +183,99 @@ module CreateComponent = (Impl: View.Impl) : ScrollViewComponent => {
       ~reactClass=Impl.view,
       ~props=
         Props.extendView(
-          Js.Undefined.(
-            {
-              "contentContainerStyle": fromOption(contentContainerStyle),
-              "horizontal":
-                fromOption(UtilsRN.optBoolToOptJsBoolean(horizontal)),
-              "keyboardDismissMode":
-                fromOption(
-                  UtilsRN.option_map(
-                    x =>
-                      switch (x) {
-                      | `interactive => "interactive"
-                      | `none => "none"
-                      | `onDrag => "on-drag"
-                      },
-                    keyboardDismissMode,
-                  ),
-                ),
-              "keyboardShouldPersistTaps":
-                fromOption(
-                  UtilsRN.option_map(
-                    x =>
-                      switch (x) {
-                      | `always => "always"
-                      | `never => "never"
-                      | `handled => "handled"
-                      },
-                    keyboardShouldPersistTaps,
-                  ),
-                ),
-              "onContentSizeChange": fromOption(onContentSizeChange),
-              "onScroll": fromOption(onScroll),
-              "pagingEnabled":
-                fromOption(UtilsRN.optBoolToOptJsBoolean(pagingEnabled)),
-              "refreshControl": fromOption(refreshControl),
-              "scrollEnabled":
-                fromOption(UtilsRN.optBoolToOptJsBoolean(scrollEnabled)),
-              "showsHorizontalScrollIndicator":
-                fromOption(
-                  UtilsRN.optBoolToOptJsBoolean(
-                    showsHorizontalScrollIndicator,
-                  ),
-                ),
-              "showsVerticalScrollIndicator":
-                fromOption(
-                  UtilsRN.optBoolToOptJsBoolean(showsVerticalScrollIndicator),
-                ),
-              "stickyHeaderIndices":
-                fromOption(
-                  UtilsRN.option_map(Array.of_list, stickyHeaderIndices),
-                ),
-              "overScrollMode":
-                fromOption(
-                  UtilsRN.option_map(
-                    x =>
-                      switch (x) {
-                      | `always => "always"
-                      | `never => "never"
-                      | `auto => "auto"
-                      },
-                    overScrollMode,
-                  ),
-                ),
-              "scrollPerfTag": fromOption(scrollPerfTag),
-              "alwaysBounceHorizontal":
-                fromOption(
-                  UtilsRN.optBoolToOptJsBoolean(alwaysBounceHorizontal),
-                ),
-              "alwaysBounceVertical":
-                fromOption(
-                  UtilsRN.optBoolToOptJsBoolean(alwaysBounceVertical),
-                ),
-              "automaticallyAdjustContentInsets":
-                fromOption(
-                  UtilsRN.optBoolToOptJsBoolean(
-                    automaticallyAdjustContentInsets,
-                  ),
-                ),
-              "bounces": fromOption(UtilsRN.optBoolToOptJsBoolean(bounces)),
-              "canCancelContentTouches":
-                fromOption(
-                  UtilsRN.optBoolToOptJsBoolean(canCancelContentTouches),
-                ),
-              "centerContent":
-                fromOption(UtilsRN.optBoolToOptJsBoolean(centerContent)),
-              "contentInset": fromOption(contentInset),
-              "contentOffset":
-                fromOption(
-                  UtilsRN.option_map(
-                    ({x, y}) => {"x": x, "y": y},
-                    contentOffset,
-                  ),
-                ),
-              "decelerationRate":
-                fromOption(
-                  UtilsRN.option_map(
-                    x =>
-                      switch (x) {
-                      | `fast => "fast"
-                      | `normal => "normal"
-                      },
-                    decelerationRate,
-                  ),
-                ),
-              "directionalLockEnabled":
-                fromOption(
-                  UtilsRN.optBoolToOptJsBoolean(directionalLockEnabled),
-                ),
-              "indicatorStyle":
-                fromOption(
-                  UtilsRN.option_map(
-                    x =>
-                      switch (x) {
-                      | `default => "default"
-                      | `black => "black"
-                      | `white => "white"
-                      },
-                    indicatorStyle,
-                  ),
-                ),
-              "maximumZoomScale": fromOption(maximumZoomScale),
-              "minimumZoomScale": fromOption(minimumZoomScale),
-              "onScrollAnimationEnd": fromOption(onScrollAnimationEnd),
-              "scrollEventThrottle": fromOption(scrollEventThrottle),
-              "scrollIndicatorInsets": fromOption(scrollIndicatorInsets),
-              "scrollsToTop":
-                fromOption(UtilsRN.optBoolToOptJsBoolean(scrollsToTop)),
-              "snapToAlignment":
-                fromOption(
-                  UtilsRN.option_map(
-                    x =>
-                      switch (x) {
-                      | `center => "center"
-                      | `start => "start"
-                      | `end_ => "end"
-                      },
-                    snapToAlignment,
-                  ),
-                ),
-              "zoomScale": fromOption(zoomScale),
-            }
-          ),
+          {
+            "contentContainerStyle": contentContainerStyle,
+            "horizontal": horizontal,
+            "keyboardDismissMode":
+              UtilsRN.option_map(
+                x =>
+                  switch (x) {
+                  | `interactive => "interactive"
+                  | `none => "none"
+                  | `onDrag => "on-drag"
+                  },
+                keyboardDismissMode,
+              ),
+            "keyboardShouldPersistTaps":
+              UtilsRN.option_map(
+                x =>
+                  switch (x) {
+                  | `always => "always"
+                  | `never => "never"
+                  | `handled => "handled"
+                  },
+                keyboardShouldPersistTaps,
+              ),
+            "onContentSizeChange": onContentSizeChange,
+            "onScroll": onScroll,
+            "pagingEnabled": pagingEnabled,
+            "refreshControl": refreshControl,
+            "scrollEnabled": scrollEnabled,
+            "showsHorizontalScrollIndicator": showsHorizontalScrollIndicator,
+            "showsVerticalScrollIndicator": showsVerticalScrollIndicator,
+            "stickyHeaderIndices":
+              UtilsRN.option_map(Array.of_list, stickyHeaderIndices),
+            "overScrollMode":
+              UtilsRN.option_map(
+                x =>
+                  switch (x) {
+                  | `always => "always"
+                  | `never => "never"
+                  | `auto => "auto"
+                  },
+                overScrollMode,
+              ),
+            "scrollPerfTag": scrollPerfTag,
+            "alwaysBounceHorizontal": alwaysBounceHorizontal,
+            "alwaysBounceVertical": alwaysBounceVertical,
+            "automaticallyAdjustContentInsets": automaticallyAdjustContentInsets,
+            "bounces": bounces,
+            "canCancelContentTouches": canCancelContentTouches,
+            "centerContent": centerContent,
+            "contentInset": contentInset,
+            "contentOffset":
+              UtilsRN.option_map(
+                ({x, y}) => {"x": x, "y": y},
+                contentOffset,
+              ),
+            "decelerationRate":
+              UtilsRN.option_map(
+                x =>
+                  switch (x) {
+                  | `fast => "fast"
+                  | `normal => "normal"
+                  },
+                decelerationRate,
+              ),
+            "directionalLockEnabled": directionalLockEnabled,
+            "indicatorStyle":
+              UtilsRN.option_map(
+                x =>
+                  switch (x) {
+                  | `default => "default"
+                  | `black => "black"
+                  | `white => "white"
+                  },
+                indicatorStyle,
+              ),
+            "maximumZoomScale": maximumZoomScale,
+            "minimumZoomScale": minimumZoomScale,
+            "onScrollAnimationEnd": onScrollAnimationEnd,
+            "scrollEventThrottle": scrollEventThrottle,
+            "scrollIndicatorInsets": scrollIndicatorInsets,
+            "scrollsToTop": scrollsToTop,
+            "snapToAlignment":
+              UtilsRN.option_map(
+                x =>
+                  switch (x) {
+                  | `center => "center"
+                  | `start => "start"
+                  | `end_ => "end"
+                  },
+                snapToAlignment,
+              ),
+            "zoomScale": zoomScale,
+          },
           ~accessibilityLabel?,
           ~accessible?,
           ~hitSlop?,
@@ -352,10 +300,7 @@ module CreateComponent = (Impl: View.Impl) : ScrollViewComponent => {
     );
 };
 
-include
-  CreateComponent(
-    {
-      [@bs.module "react-native"]
-      external view : ReasonReact.reactClass = "ScrollView";
-    },
-  );
+include CreateComponent({
+  [@bs.module "react-native"]
+  external view: ReasonReact.reactClass = "ScrollView";
+});

@@ -10,9 +10,9 @@ constraint 'a =
         "height": float,
         "screenX": float,
         "screenY": float,
-        "width": float
-      }
-    } as 'b
+        "width": float,
+      },
+    } as 'b,
   );
 
 type listener('a) = event('a) => unit
@@ -25,9 +25,9 @@ constraint 'a =
         "height": float,
         "screenX": float,
         "screenY": float,
-        "width": float
-      }
-    } as 'b
+        "width": float,
+      },
+    } as 'b,
   );
 
 type keyboardEvent =
@@ -39,23 +39,21 @@ type keyboardEvent =
   | KeyboardDidChangeFrame;
 
 [@bs.module "react-native"] [@bs.scope "Keyboard"]
-external dismiss : unit => unit = "";
+external dismiss: unit => unit = "";
 
 let addListener:
   (
     keyboardEvent,
-    listener(
-      {
-        ..
-        "endCoordinates": {
-          .
-          "height": float,
-          "screenX": float,
-          "screenY": float,
-          "width": float
-        }
-      }
-    )
+    listener({
+      ..
+      "endCoordinates": {
+        .
+        "height": float,
+        "screenX": float,
+        "screenY": float,
+        "width": float,
+      },
+    })
   ) =>
   subscription;
 
@@ -64,18 +62,16 @@ let removeAllListeners: keyboardEvent => unit;
 let removeListener:
   (
     keyboardEvent,
-    listener(
-      {
-        ..
-        "endCoordinates": {
-          .
-          "height": float,
-          "screenX": float,
-          "screenY": float,
-          "width": float
-        }
-      }
-    )
+    listener({
+      ..
+      "endCoordinates": {
+        .
+        "height": float,
+        "screenX": float,
+        "screenY": float,
+        "width": float,
+      },
+    })
   ) =>
   unit;
 
