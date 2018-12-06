@@ -1,5 +1,5 @@
 {
-  "name": "bs-react-native",
+  "name": "bs-react-native-web",
   "version": "0.10.0",
   "scripts": {
     "format": "find . -name \"*.re\" | grep -v \"node_modules\" | xargs bsrefmt --in-place",
