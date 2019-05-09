@@ -74,6 +74,7 @@ let make =
       ~selectionState=?,
       ~spellCheck=?,
       ~inputAccessoryViewID=?,
+      ~allowFontScaling=?,
     ) =>
   ReasonReact.wrapJsForReason(
     ~reactClass=view,
@@ -211,6 +212,7 @@ let make =
           "selectionState": selectionState,
           "spellCheck": spellCheck,
           "inputAccessoryViewID": inputAccessoryViewID,
+          "allowFontScaling": allowFontScaling,
         },
         ~accessibilityLabel?,
         ~accessible?,

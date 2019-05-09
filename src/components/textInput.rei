@@ -464,6 +464,7 @@ let make:
     ~selectionState: 'documentSelectionState=?,
     ~spellCheck: bool=?,
     ~inputAccessoryViewID: string=?,
+    ~allowFontScaling: bool=?,
     array(ReasonReact.reactElement)
   ) =>
   ReasonReact.component(
